@@ -39,7 +39,7 @@ jobs:
     needs: [build-npm]
     steps:
     - name: test
-    - uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v3
       with:
         name: build-output
     - run: ls ./build
