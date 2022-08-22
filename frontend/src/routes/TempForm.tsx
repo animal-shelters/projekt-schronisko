@@ -1,7 +1,4 @@
-import InitialData from "../components/forms/InitialData";
-
 function render(): JSX.Element {
-    let state = InitialData;
     return (
         <>
             <form>
