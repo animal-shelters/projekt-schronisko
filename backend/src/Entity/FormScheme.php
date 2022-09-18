@@ -8,7 +8,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource()]
+#[ApiResource(
+	collectionOperations: [
+		'get' => [],
+		'post' => [],
+	],
+	itemOperations: [
+		'get' => [],
+		'put' => [],
+	]
+)]
 #[ORM\Entity()]
 class FormScheme
 {

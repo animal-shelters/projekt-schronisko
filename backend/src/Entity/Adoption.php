@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 	],
 	itemOperations: [
 		'get' => [],
-		'put' => []
 	]
 
 )]
