@@ -10,8 +10,13 @@ import {
 } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import InitialData from "./InitialData";
+import CheckboxInput, { CreateCheckboxInputComponent } from "./Inputs/CheckboxInput";
 import OptionInput, { CreateOptionInputComponent } from "./Inputs/OptionInput";
-import TextInput, { createTextInputComponent } from "./Inputs/TextInput";
+import RadioButtonInput, {
+    CreateRadioButtonInputComponent
+} from "./Inputs/RadioButtonInput";
+import TextAreaInput, { CreateTextAreaInputComponent } from "./Inputs/TextAreaInput";
+import TextInput, { CreateTextInputComponent } from "./Inputs/TextInput";
 
 interface componentInterface {
     id: string;
@@ -29,6 +34,18 @@ function FormCreator(): JSX.Element {
             content: "Option input",
             type: "OptionInput",
         },
+        {
+            content: "Radio button input",
+            type: "RadioButtonInput",
+        },
+        {
+            content: "Checkbox input",
+            type: "CheckboxInput",
+        },
+        {
+            content: "Text area input",
+            type: "TextAreaInput",
+        },
     ];
 
     const [state, setState] = useState(InitialData);
@@ -40,10 +57,22 @@ function FormCreator(): JSX.Element {
         if (componentType === "OptionInput") {
             return <OptionInput {...props} />;
         }
+        if (componentType === "RadioButtonInput") {
+            return <RadioButtonInput {...props} />;
+        }
+        if (componentType === "CheckboxInput") {
+            return <CheckboxInput {...props} />;
+        }
+        if (componentType === "TextAreaInput") {
+            return <TextAreaInput {...props} />;
+        }
         return <></>;
     }
 
-    function getStyle(style: DraggingStyle | NotDraggingStyle | undefined, snapshot: DraggableStateSnapshot) {
+    function getStyle(
+        style: DraggingStyle | NotDraggingStyle | undefined,
+        snapshot: DraggableStateSnapshot
+    ) {
         if (!snapshot.isDropAnimating) {
             return style;
         }
@@ -77,10 +106,19 @@ function FormCreator(): JSX.Element {
             let newComponent: componentInterface;
             switch (draggableId) {
                 case "TextInput":
-                    newComponent = createTextInputComponent(uuidv4());
+                    newComponent = CreateTextInputComponent(uuidv4());
                     break;
                 case "OptionInput":
                     newComponent = CreateOptionInputComponent(uuidv4());
+                    break;
+                case "RadioButtonInput":
+                    newComponent = CreateRadioButtonInputComponent(uuidv4());
+                    break;
+                case "CheckboxInput":
+                    newComponent = CreateCheckboxInputComponent(uuidv4());
+                    break;
+                case "TextAreaInput":
+                    newComponent = CreateTextAreaInputComponent(uuidv4());
                     break;
                 default:
                     return;
@@ -211,7 +249,11 @@ function FormCreator(): JSX.Element {
                                                         .style,
                                                     snapshot
                                                 )}
-                                                className={`py-1 px-3 border border-dashed border-gray-500 m-2 ${snapshot.isDragging ? "" : "no-dragging-animation"}`}
+                                                className={`py-1 px-3 border border-dashed border-gray-500 m-2 ${
+                                                    snapshot.isDragging
+                                                        ? ""
+                                                        : "no-dragging-animation"
+                                                }`}
                                             >
                                                 {item.content}
                                             </div>

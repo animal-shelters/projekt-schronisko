@@ -4,7 +4,7 @@ interface TextInputProps {
     placeholder: string;
 }
 
-export function createTextInputComponent(id: string) {
+export function CreateTextInputComponent(id: string) {
     const newTextInputComponent = {
         id: id,
         type: "TextInput",
