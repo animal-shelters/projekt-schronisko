@@ -31,7 +31,6 @@ jobs:
         script: |
           cd /home/zimniok/projekt-schronisko/frontend
           git fetch origin main
-          git reset --hard FETCH_HEAD
           sudo docker build . --file Dockerfile --tag frontend:latest
           cd ..
           sudo docker container stop frontend
