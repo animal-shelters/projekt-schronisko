@@ -60,8 +60,8 @@ RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
 ###< recipes ###
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY --link docker/php/conf.d/api-platform.ini $PHP_INI_DIR/conf.d/
-COPY --link docker/php/conf.d/api-platform.prod.ini $PHP_INI_DIR/conf.d/
+COPY --link docker/php/conf.d/app.ini $PHP_INI_DIR/conf.d/
+COPY --link docker/php/conf.d/app.prod.ini $PHP_INI_DIR/conf.d/
 
 COPY --link docker/php/php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 RUN mkdir -p /var/run/php
