@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import {
     DragDropContext,
@@ -9,6 +10,7 @@ import {
     NotDraggingStyle
 } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
+import Modal from "../Modal";
 import InitialData from "./InitialData";
 import CheckboxInput, { CreateCheckboxInputComponent } from "./Inputs/CheckboxInput";
 import OptionInput, { CreateOptionInputComponent } from "./Inputs/OptionInput";
@@ -17,6 +19,7 @@ import RadioButtonInput, {
 } from "./Inputs/RadioButtonInput";
 import TextAreaInput, { CreateTextAreaInputComponent } from "./Inputs/TextAreaInput";
 import TextInput, { CreateTextInputComponent } from "./Inputs/TextInput";
+import OptionInputModal from "./modals/OptionInputModal";
 
 interface componentInterface {
     id: string;
@@ -25,6 +28,8 @@ interface componentInterface {
 }
 
 function FormCreator(): JSX.Element {
+    const [showModal, setShowModal] = useState(false);
+
     const ITEMS = [
         {
             content: "Text input",
@@ -100,7 +105,7 @@ function FormCreator(): JSX.Element {
         if (source.droppableId === "ITEMS") {
             const column =
                 state.columns[
-                    destination.droppableId as keyof typeof state.columns
+                destination.droppableId as keyof typeof state.columns
                 ];
 
             let newComponent: componentInterface;
@@ -172,6 +177,17 @@ function FormCreator(): JSX.Element {
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
+
+            <button
+                className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={() => setShowModal(true)}
+            >
+                Open regular modal
+            </button>
+            <OptionInputModal id="asdf" label="test" />
+
+
             <div className="text-left flex">
                 <div className="flex-grow">
                     <h1>Create form</h1>
@@ -188,7 +204,7 @@ function FormCreator(): JSX.Element {
                                                 (componentId, index) => {
                                                     let component =
                                                         state.components[
-                                                            componentId
+                                                        componentId
                                                         ];
                                                     return (
                                                         <Draggable
@@ -249,11 +265,10 @@ function FormCreator(): JSX.Element {
                                                         .style,
                                                     snapshot
                                                 )}
-                                                className={`py-1 px-3 border border-dashed border-gray-500 m-2 ${
-                                                    snapshot.isDragging
-                                                        ? ""
-                                                        : "no-dragging-animation"
-                                                }`}
+                                                className={`py-1 px-3 border border-dashed border-gray-500 m-2 ${snapshot.isDragging
+                                                    ? ""
+                                                    : "no-dragging-animation"
+                                                    }`}
                                             >
                                                 {item.content}
                                             </div>
