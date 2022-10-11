@@ -1,0 +1,38 @@
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-npm:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend/
+
+    strategy:
+      matrix:
+        node-version: [18.7.0]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - name: Restart Node Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd /home/zimniok/projekt-schronisko/frontend
+          git fetch origin main
+          sudo docker build . --file Dockerfile --tag frontend:latest
+          cd ..
+          sudo docker container stop frontend
+          sudo docker container rm frontend
+          sudo docker run -d --name frontend -p 0.0.0.0:80:80 frontend
