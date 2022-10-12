@@ -28,7 +28,12 @@ services:
       context: ./pwa
       target: dev
     environment:
+      SERVER_NAME: ${SERVER_NAME:-localhost}, pwa:3000
       NEXT_PUBLIC_ENTRYPOINT: http://caddy
+    ports:
+      - target: 3000
+        published: ${HTTP_PORT:-3000}
+        protocol: tcp
 
   caddy:
     build:
