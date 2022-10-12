@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,13 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
-	collectionOperations: [
-		'get' => [],
-		'post' => [],
-	],
-	itemOperations: [
-		'get' => [],
-		'put' => [],
+	operations: [
+		new Get(),
+		new GetCollection(),
+		new Post(),
+		new Put(),
 	]
 )]
 #[ORM\Entity()]
@@ -83,7 +85,7 @@ class User
 	private Collection $walks;
 
 	#[ORM\OneToMany(
-		mappedBy: 'animal',
+		mappedBy: 'user',
 		targetEntity: Adoption::class
 	)]
 	private Collection $adoptions;
