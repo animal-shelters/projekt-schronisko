@@ -2,19 +2,22 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
-	collectionOperations: [
-		'get' => [],
-		'post' => [],
-	],
-	itemOperations: [
-		'get' => [],
-		'put' => [],
-		'delete' => [],
+	operations: [
+		new GetCollection(),
+		new Post(),
+		new Get(),
+		new Put(),
+		new Delete()
 	]
 )]
 #[ORM\Entity()]
