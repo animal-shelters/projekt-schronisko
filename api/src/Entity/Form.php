@@ -35,6 +35,11 @@ class Form
 		targetEntity: FormScheme::class,
 		inversedBy: 'forms'
 	)]
+	#[ORM\JoinColumn(
+		name: 'form_scheme_id',
+		referencedColumnName: 'id',
+		nullable: false
+	)]
 	private FormScheme $formScheme;
 
 	#[ORM\ManyToOne(

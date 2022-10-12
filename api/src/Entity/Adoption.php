@@ -16,6 +16,11 @@ class Adoption
 		targetEntity: User::class,
 		inversedBy: 'adoptions'
 	)]
+	#[ORM\JoinColumn(
+		name: 'user_id',
+		referencedColumnName: 'id',
+		nullable: false
+	)]
 	private User $user;
 	
 	#[ORM\Id]
