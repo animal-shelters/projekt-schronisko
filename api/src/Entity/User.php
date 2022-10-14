@@ -11,6 +11,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -19,6 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(),
 		new Post(),
 		new Put(),
+	],
+	normalizationContext: [
+		'groups' => 'user:entity:read'
+	],
+	denormalizationContext: [
+		'groups' => 'user:entity:write'
 	]
 )]
 #[ORM\Entity()]
@@ -27,54 +34,92 @@ class User
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
+	#[Groups(
+		'user:entity:read'
+	)]
 	private ?int $id;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups(
+		'user:entity:write'
+	)]
 	private string $login;
 	
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups(
+		'user:entity:write'
+	)]
 	private string $password;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private string $name;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private string $surname;
 
 	#[ORM\Column(type: 'string', length: 11)]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private ?string $pesel;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private string $phone;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Assert\Choice(choices: ['volunteer', 'newOwner', 'employee'])]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private string $role;
 
-	#[ORM\Column(type: 'decimal', precision: 2, scale: 1)]
-	private ?float $salary;
-
-	#[ORM\Column(type: 'date')]
-	private ?DateTime $employmentDate;
-
 	#[ORM\Column(type: 'string', length: 255)]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private ?string $street;
 	
 	#[ORM\Column(type: 'string', length: 5)]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private ?string $postalCode;
 
 	#[ORM\Column(type: 'string', length: 255)]
+	#[Groups(
+		'user:entity:read',
+		'user:entity:write',
+	)]
 	private ?string $city;
 
 	#[ORM\OneToMany(
 		mappedBy: 'user',
 		targetEntity: Form::class
+	)]
+	#[Groups(
+		'user:entity:read',
 	)]
 	private Collection $forms;
 
@@ -82,11 +127,17 @@ class User
 		mappedBy: 'user',
 		targetEntity: Walk::class
 	)]
+	#[Groups(
+		'user:entity:read',
+	)]
 	private Collection $walks;
 
 	#[ORM\OneToMany(
 		mappedBy: 'user',
 		targetEntity: Adoption::class
+	)]
+	#[Groups(
+		'user:entity:read',
 	)]
 	private Collection $adoptions;
 
@@ -413,5 +464,25 @@ class User
 	public function getAdoptions(): Collection
 	{
 		return $this->adoptions;
+	}
+
+	/**
+	 * Get the value of city
+	 */ 
+	public function getCity()
+	{
+		return $this->city;
+	}
+
+	/**
+	 * Set the value of city
+	 *
+	 * @return  self
+	 */ 
+	public function setCity($city)
+	{
+		$this->city = $city;
+
+		return $this;
 	}
 }

@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Put;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -20,6 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Post(),
 		new Put(),
 		new Delete()
+	],
+	normalizationContext: [
+		'groups' => 'walk:entity:read'
+	],
+	denormalizationContext: [
+		'groups' => 'walk:entity:write'
 	]
 )]
 #[ORM\Entity()]
@@ -28,27 +35,50 @@ class Walk
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
+	#[Groups(
+		'walk:entity:read',
+	)]
 	private ?int $id;
 
 	#[ORM\Column(type: 'date')]
 	#[Assert\NotNull()]
+	#[Groups(
+		'walk:entity:read',
+		'walk:entity:write',
+	)]
 	private DateTimeInterface $date;
 
 	#[ORM\Column(type: 'time')]
+	#[Groups(
+		'walk:entity:read',
+		'walk:entity:write',
+	)]
 	private ?DateTime $beginTime;
 
 	#[ORM\Column(type: 'time')]
+	#[Groups(
+		'walk:entity:read',
+		'walk:entity:write',
+	)]
 	private ?DateTime $endTime;
 	
 	#[ORM\ManyToOne(
 		targetEntity: Animal::class,
 		inversedBy: 'walks'
 	)]
+	#[Groups(
+		'walk:entity:read',
+		'walk:entity:write',
+	)]
 	private Animal $animal;
 	
 	#[ORM\ManyToOne(
 		targetEntity: User::class,
 		inversedBy: 'walks'
+	)]
+	#[Groups(
+		'walk:entity:read',
+		'walk:entity:write',
 	)]
 	private User $user;
 

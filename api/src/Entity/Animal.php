@@ -11,6 +11,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -19,6 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Post(),
 		new Get(),
 		new Put(),
+	],
+	normalizationContext: [
+		'groups' => 'animal:entity:read'
+	],
+	denormalizationContext: [
+		'groups' => 'animal:entity:write'
 	]
 )]
 #[ORM\Entity()]
@@ -27,38 +34,71 @@ class Animal
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
+	#[Groups([
+		'animal:entity:read'
+	])]
 	private ?int $id;
 	
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups([
+		'animal:entity:read',
+		'animal:entity:write'
+	])]
 	private string $species;
 
 	#[ORM\Column(type: 'string', length: 255)]
+	#[Groups([
+		'animal:entity:read',
+		'animal:entity:write'
+	])]
 	private ?string $breed;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Groups([
+		'animal:entity:read',
+		'animal:entity:write'
+	])]
 	private string $name;
 
 	#[ORM\Column(type: 'date')]
+	#[Groups([
+		'animal:entity:read',
+		'animal:entity:write'
+	])]
 	private ?DateTimeInterface $birthDate;
 
 	#[ORM\Column(type: 'date')]
+	#[Groups([
+		'animal:entity:read',
+		'animal:entity:write'
+	])]
 	private ?DateTimeInterface $intakeDate;
 
 	#[ORM\Column(type: 'string', length: 2000)]
+	#[Groups([
+		'animal:entity:read',
+		'animal:entity:write'
+	])]
 	private ?string $description;
 
 	#[ORM\OneToMany(
 		mappedBy: 'animal',
 		targetEntity: Walk::class
 	)]
+	#[Groups([
+		'animal:entity:read'
+	])]
 	private Collection $walks;
 	
 	#[ORM\OneToMany(
 		mappedBy: 'animal',
 		targetEntity: Adoption::class
 	)]
+	#[Groups([
+		'animal:entity:read'
+	])]
 	private Collection $adoptions;
 
 	public function __construct()
