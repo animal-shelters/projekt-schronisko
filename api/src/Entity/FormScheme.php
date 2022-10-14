@@ -10,13 +10,19 @@ use ApiPlatform\Metadata\Put;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
 	operations: [
 		new GetCollection(),
 		new Post(),
 		new Get(),
-		new Put(),
+	],
+	normalizationContext: [
+		'groups' => 'form_scheme:entity:read'
+	],
+	denormalizationContext: [
+		'groups' => 'form_scheme:entity:write'
 	]
 )]
 #[ORM\Entity()]
@@ -25,18 +31,32 @@ class FormScheme
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
+	#[Groups(
+		'form_scheme:entity:read',
+	)]
 	private ?int $id;
 
 	#[ORM\Column(type: 'string', length: 255)]
+	#[Groups(
+		'form_scheme:entity:read',
+		'form_scheme:entity:write',
+	)]
 	private string $name;
 
 	#[ORM\Column(type: 'json', length: 10000)]
+	#[Groups(
+		'form_scheme:entity:read',
+		'form_scheme:entity:write',
+	)]
 	private string $content;
 
 	#[ORM\OneToMany(
 		mappedBy: 'formScheme',
 		targetEntity: Form::class,
 		cascade: ['persist']
+	)]
+	#[Groups(
+		'form_scheme:entity:read',
 	)]
 	private Collection $forms;
 

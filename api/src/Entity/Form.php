@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -16,8 +17,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(),
 		new Post(),
 		new Get(),
-		new Put(),
 		new Delete()
+	],
+	normalizationContext: [
+		'groups' => 'form:entity:read'
+	],
+	denormalizationContext: [
+		'groups' => 'form:entity:write'
 	]
 )]
 #[ORM\Entity()]
@@ -26,9 +32,16 @@ class Form
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
+	#[Groups(
+		'form:entity:read'
+	)]
 	private ?int $id;
 
 	#[ORM\Column(type: 'json', length: 10000)]
+	#[Groups(
+		'form:entity:write',
+		'form:entity:read'
+	)]
 	private ?string $content;
 
 	#[ORM\ManyToOne(
@@ -40,11 +53,19 @@ class Form
 		referencedColumnName: 'id',
 		nullable: false
 	)]
+	#[Groups(
+		'form:entity:write',
+		'form:entity:read'
+	)]
 	private FormScheme $formScheme;
 
 	#[ORM\ManyToOne(
 		targetEntity: User::class,
 		inversedBy: 'forms'
+	)]
+	#[Groups(
+		'form:entity:write',
+		'form:entity:read'
 	)]
 	private User $user;
 

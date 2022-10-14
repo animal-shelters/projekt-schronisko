@@ -5,9 +5,17 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ApiResource()]
+#[ApiResource(
+	normalizationContext: [
+		'groups' => 'adoption:entity:read',
+	],
+	denormalizationContext: [
+		'groups' => 'adoption:entity:write'
+	]
+)]
 #[ORM\Entity()]
 class Adoption
 {
@@ -21,6 +29,10 @@ class Adoption
 		referencedColumnName: 'id',
 		nullable: false
 	)]
+	#[Groups(
+		'adoption:entity:write',
+		'adoption:entity:read',
+	)]
 	private User $user;
 	
 	#[ORM\Id]
@@ -28,10 +40,18 @@ class Adoption
 		targetEntity: Animal::class,
 		inversedBy: 'adoptions'
 	)]
+	#[Groups(
+		'adoption:entity:write',
+		'adoption:entity:read',
+	)]
 	private Animal $animal;
 
 	#[ORM\Column(type: 'date')]
 	#[Assert\NotNull()]
+	#[Groups(
+		'adoption:entity:write',
+		'adoption:entity:read',
+	)]
 	private DateTimeInterface $date;
 
 
