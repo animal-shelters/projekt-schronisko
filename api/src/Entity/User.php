@@ -16,16 +16,38 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
 	operations: [
-		new Get(),
-		new GetCollection(),
-		new Post(),
-		new Put(),
+		new GetCollection(
+			normalizationContext: [
+				'groups' => 'user:collection:get'
+			]
+		),
+		new Post(
+			denormalizationContext: [
+				'groups' => 'user:collection:post'
+			]
+		),
+		new Get(
+			normalizationContext: [
+				'groups' => 'user:item:get'
+			]
+		),
+		new Put(
+			denormalizationContext: [
+				'groups' => 'user:item:put'
+			]
+		),
 	],
 	normalizationContext: [
-		'groups' => 'user:entity:read'
+		'groups' => [
+			'user:collection:get',
+			'user:item:get',
+		]
 	],
 	denormalizationContext: [
-		'groups' => 'user:entity:write'
+		'groups' => [
+			'user:collection:post',
+			'user:item:put',
+		]
 	]
 )]
 #[ORM\Entity()]
@@ -35,52 +57,67 @@ class User
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
 	#[Groups(
-		'user:entity:read'
+		'user:collection:get',
+		'user:item:get',
+		'animal:collection:get',
+		'animal:item:get',
 	)]
 	private ?int $id;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups(
-		'user:entity:write'
+		'user:collection:post',
 	)]
 	private string $login;
 	
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups(
-		'user:entity:write'
+		'user:collection:post',
 	)]
 	private string $password;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
+		'animal:collection:get',
+		'animal:item:get',
 	)]
 	private string $name;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
+		'animal:collection:get',
+		'animal:item:get',
 	)]
 	private string $surname;
 
 	#[ORM\Column(type: 'string', length: 11)]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
 	)]
 	private ?string $pesel;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
 	)]
 	private string $phone;
 
@@ -88,29 +125,37 @@ class User
 	#[Assert\NotNull()]
 	#[Assert\Choice(choices: ['volunteer', 'newOwner', 'employee'])]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
 	)]
 	private string $role;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
 	)]
 	private ?string $street;
 	
 	#[ORM\Column(type: 'string', length: 5)]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
 	)]
 	private ?string $postalCode;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Groups(
-		'user:entity:read',
-		'user:entity:write',
+		'user:collection:get',
+		'user:item:get',
+		'user:collection:post',
+		'user:item:put',
 	)]
 	private ?string $city;
 
@@ -119,7 +164,8 @@ class User
 		targetEntity: Form::class
 	)]
 	#[Groups(
-		'user:entity:read',
+		'user:collection:get',
+		'user:item:get',
 	)]
 	private Collection $forms;
 
@@ -128,7 +174,8 @@ class User
 		targetEntity: Walk::class
 	)]
 	#[Groups(
-		'user:entity:read',
+		'user:collection:get',
+		'user:item:get',
 	)]
 	private Collection $walks;
 
@@ -137,7 +184,8 @@ class User
 		targetEntity: Adoption::class
 	)]
 	#[Groups(
-		'user:entity:read',
+		'user:collection:get',
+		'user:item:get',
 	)]
 	private Collection $adoptions;
 
