@@ -16,17 +16,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
 	operations: [
-		new GetCollection(),
-		new Get(),
-		new Post(),
-		new Put(),
+		new GetCollection(
+			normalizationContext: [
+				'groups' => 'walk:collection:get'
+			]
+		),
+		new Post(
+			denormalizationContext: [
+				'groups' => 'walk:collection:post'
+			]
+		),
+		new Get(
+			normalizationContext: [
+				'groups' => 'walk:item:get'
+			]
+		),
+		new Put(
+			denormalizationContext: [
+				'groups' => 'walk:item:put'
+			]
+		),
 		new Delete()
 	],
 	normalizationContext: [
-		'groups' => 'walk:entity:read'
+		'groups' => [
+			'walk:collection:get',
+			'walk:item:get'
+		]
 	],
 	denormalizationContext: [
-		'groups' => 'walk:entity:write'
+		'groups' => [
+			'walk:collection:post',
+			'walk:item:put'
+		]
 	]
 )]
 #[ORM\Entity()]
@@ -35,51 +57,82 @@ class Walk
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
-	#[Groups(
-		'walk:entity:read',
-	)]
+	#[Groups([
+		'walk:collection:get',
+		'walk:item:get',
+		'user:collection:get',
+		'user:item:get',
+		'animal:collection:get',
+		'animal:item:get',
+	])]
 	private ?int $id;
 
 	#[ORM\Column(type: 'date')]
 	#[Assert\NotNull()]
-	#[Groups(
-		'walk:entity:read',
-		'walk:entity:write',
-	)]
+	#[Groups([
+		'walk:collection:get',
+		'walk:item:get',
+		'walk:collection:post',
+		'walk:item:put',
+		'user:collection:get',
+		'user:item:get',
+		'animal:collection:get',
+		'animal:item:get',
+	])]
 	private DateTimeInterface $date;
 
 	#[ORM\Column(type: 'time')]
-	#[Groups(
-		'walk:entity:read',
-		'walk:entity:write',
-	)]
+	#[Groups([
+		'walk:collection:get',
+		'walk:item:get',
+		'walk:collection:post',
+		'walk:item:put',
+		'user:collection:get',
+		'user:item:get',
+		'animal:collection:get',
+		'animal:item:get',
+	])]
 	private ?DateTime $beginTime;
 
 	#[ORM\Column(type: 'time')]
-	#[Groups(
-		'walk:entity:read',
-		'walk:entity:write',
-	)]
+	#[Groups([
+		'walk:collection:get',
+		'walk:item:get',
+		'walk:collection:post',
+		'walk:item:put',
+		'user:collection:get',
+		'user:item:get',
+		'animal:collection:get',
+		'animal:item:get',
+	])]
 	private ?DateTime $endTime;
 	
 	#[ORM\ManyToOne(
 		targetEntity: Animal::class,
 		inversedBy: 'walks'
 	)]
-	#[Groups(
-		'walk:entity:read',
-		'walk:entity:write',
-	)]
+	#[Groups([
+		'walk:collection:get',
+		'walk:item:get',
+		'walk:collection:post',
+		'walk:item:put',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private Animal $animal;
 	
 	#[ORM\ManyToOne(
 		targetEntity: User::class,
 		inversedBy: 'walks'
 	)]
-	#[Groups(
-		'walk:entity:read',
-		'walk:entity:write',
-	)]
+	#[Groups([
+		'walk:collection:get',
+		'walk:item:get',
+		'walk:collection:post',
+		'walk:item:put',
+		'animal:collection:get',
+		'animal:item:get',
+	])]
 	private User $user;
 
 	/**

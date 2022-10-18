@@ -14,15 +14,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
 	operations: [
-		new GetCollection(),
-		new Post(),
-		new Get(),
+		new GetCollection(
+			normalizationContext: [
+				'groups' => 'form_scheme:collection:get'
+			]
+		),
+		new Post(
+			denormalizationContext: [
+				'groups' => 'form_scheme:collection:post'
+			]
+		),
+		new Get(
+			normalizationContext: [
+				'groups' => 'form_scheme:item:get'
+			]
+		),
 	],
 	normalizationContext: [
-		'groups' => 'form_scheme:entity:read'
+		'groups' => [
+			'form_scheme:collection:get',
+			'form_scheme:item:get'
+		]
 	],
 	denormalizationContext: [
-		'groups' => 'form_scheme:entity:write'
+		'groups' => 'form_scheme:collection:post'
 	]
 )]
 #[ORM\Entity()]
@@ -31,23 +46,30 @@ class FormScheme
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
-	#[Groups(
-		'form_scheme:entity:read',
-	)]
+	#[Groups([
+		'form_scheme:collection:get',
+		'form_scheme:item:get'
+	])]
 	private ?int $id;
 
 	#[ORM\Column(type: 'string', length: 255)]
-	#[Groups(
-		'form_scheme:entity:read',
-		'form_scheme:entity:write',
-	)]
+	#[Groups([
+		'form_scheme:collection:get',
+		'form_scheme:item:get',
+		'form_scheme:collection:post',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private string $name;
 
 	#[ORM\Column(type: 'json', length: 10000)]
-	#[Groups(
-		'form_scheme:entity:read',
-		'form_scheme:entity:write',
-	)]
+	#[Groups([
+		'form_scheme:collection:get',
+		'form_scheme:item:get',
+		'form_scheme:collection:post',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private string $content;
 
 	#[ORM\OneToMany(
@@ -55,9 +77,10 @@ class FormScheme
 		targetEntity: Form::class,
 		cascade: ['persist']
 	)]
-	#[Groups(
-		'form_scheme:entity:read',
-	)]
+	#[Groups([
+		'form_scheme:collection:get',
+		'form_scheme:item:get',
+	])]
 	private Collection $forms;
 
 	public function __construct()

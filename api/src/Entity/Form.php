@@ -7,23 +7,36 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
 	operations: [
-		new GetCollection(),
-		new Post(),
-		new Get(),
+		new GetCollection(
+			normalizationContext: [
+				'groups' => 'form:collection:get'
+			]
+		),
+		new Post(
+			denormalizationContext: [
+				'groups' => 'form:collection:post'
+			]
+		),
+		new Get(
+			normalizationContext: [
+				'groups' => 'form:item:get'
+			]
+		),
 		new Delete()
 	],
 	normalizationContext: [
-		'groups' => 'form:entity:read'
+		'groups' => [
+			'form:collection:get',
+			'form:item:get'
+		]
 	],
 	denormalizationContext: [
-		'groups' => 'form:entity:write'
+		'groups' => 'form:collection:post'
 	]
 )]
 #[ORM\Entity()]
@@ -32,16 +45,20 @@ class Form
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
-	#[Groups(
-		'form:entity:read'
-	)]
+	#[Groups([
+		'form:collection:get',
+		'form:item:get'
+	])]
 	private ?int $id;
 
 	#[ORM\Column(type: 'json', length: 10000)]
-	#[Groups(
-		'form:entity:write',
-		'form:entity:read'
-	)]
+	#[Groups([
+		'form:collection:post',
+		'form:collection:get',
+		'form:item:get',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private ?string $content;
 
 	#[ORM\ManyToOne(
@@ -53,20 +70,24 @@ class Form
 		referencedColumnName: 'id',
 		nullable: false
 	)]
-	#[Groups(
-		'form:entity:write',
-		'form:entity:read'
-	)]
+	#[Groups([
+		'form:collection:post',
+		'form:collection:get',
+		'form:item:get',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private FormScheme $formScheme;
 
 	#[ORM\ManyToOne(
 		targetEntity: User::class,
 		inversedBy: 'forms'
 	)]
-	#[Groups(
-		'form:entity:write',
-		'form:entity:read'
-	)]
+	#[Groups([
+		'form:collection:post',
+		'form:collection:get',
+		'form:item:get'
+	])]
 	private User $user;
 
 	/**

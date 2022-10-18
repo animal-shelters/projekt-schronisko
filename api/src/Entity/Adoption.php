@@ -3,18 +3,52 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
+	operations: [
+		new GetCollection(
+			normalizationContext: [
+				'groups' => 'adoption:collection:get'
+			]
+		),
+		new Post(
+			denormalizationContext: [
+				'groups' => 'adoption:collection:post'
+			]
+		),
+		new Get(
+			normalizationContext: [
+				'groups' => 'adoption:item:get'
+			]
+		),
+		new Put(
+			denormalizationContext: [
+				'groups' => 'adoption:item:put'
+			]
+		),
+		new Delete(),
+	],
 	normalizationContext: [
-		'groups' => 'adoption:entity:read',
+		'groups' => [
+			'adoption:collection:get',
+			'adoption:item:get'
+		]
 	],
 	denormalizationContext: [
-		'groups' => 'adoption:entity:write'
-	]
+		'groups' => [
+			'adoption:collection:post',
+			'adoption:item:put'
+		] 
+	],
 )]
 #[ORM\Entity()]
 class Adoption
@@ -29,10 +63,12 @@ class Adoption
 		referencedColumnName: 'id',
 		nullable: false
 	)]
-	#[Groups(
-		'adoption:entity:write',
-		'adoption:entity:read',
-	)]
+	#[Groups([
+		'adoption:collection:get',
+		'adoption:item:get',
+		'adoption:collection:post',
+		'adoption:item:put',
+	])]
 	private User $user;
 	
 	#[ORM\Id]
@@ -40,18 +76,26 @@ class Adoption
 		targetEntity: Animal::class,
 		inversedBy: 'adoptions'
 	)]
-	#[Groups(
-		'adoption:entity:write',
-		'adoption:entity:read',
-	)]
+	#[Groups([
+		'adoption:collection:get',
+		'adoption:item:get',
+		'adoption:collection:post',
+		'adoption:item:put',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private Animal $animal;
 
 	#[ORM\Column(type: 'date')]
 	#[Assert\NotNull()]
-	#[Groups(
-		'adoption:entity:write',
-		'adoption:entity:read',
-	)]
+	#[Groups([
+		'adoption:collection:get',
+		'adoption:item:get',
+		'adoption:collection:post',
+		'adoption:item:put',
+		'user:collection:get',
+		'user:item:get',
+	])]
 	private DateTimeInterface $date;
 
 

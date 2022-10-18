@@ -16,16 +16,38 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
 	operations: [
-		new GetCollection(),
-		new Post(),
-		new Get(),
-		new Put(),
+		new GetCollection(
+			normalizationContext: [
+				'groups' => 'animal:collection:get'
+			]
+		),
+		new Post(
+			denormalizationContext: [
+				'groups' => 'animal:collection:post'
+			]
+		),
+		new Get(
+			normalizationContext: [
+				'groups' => 'animal:item:get'
+			]
+		),
+		new Put(
+			denormalizationContext: [
+				'groups' => 'animal:item:put'
+			]
+		),
 	],
 	normalizationContext: [
-		'groups' => 'animal:entity:read'
+		'groups' => [
+			'animal:item:get',
+			'animal:collection:get'
+		]
 	],
 	denormalizationContext: [
-		'groups' => 'animal:entity:write'
+		'groups' => [
+			'animal:item:put',
+			'animal:collection:post'
+		]
 	]
 )]
 #[ORM\Entity()]
@@ -35,51 +57,70 @@ class Animal
 	#[ORM\GeneratedValue]
 	#[ORM\Column(type: 'integer')]
 	#[Groups([
-		'animal:entity:read'
+		'animal:collection:get',
+		'animal:item:get',
+		'user:collection:get',
+		'user:item:get',
 	])]
 	private ?int $id;
-	
+
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups([
-		'animal:entity:read',
-		'animal:entity:write'
+		'animal:collection:get',
+		'animal:item:get',
+		'animal:item:put',
+		'animal:collection:post'
 	])]
 	private string $species;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Groups([
-		'animal:entity:read',
-		'animal:entity:write'
+		'animal:collection:get',
+		'animal:item:get',
+		'animal:item:put',
+		'animal:collection:post'
 	])]
 	private ?string $breed;
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
 	#[Groups([
-		'animal:entity:read',
-		'animal:entity:write'
+		'animal:collection:get',
+		'animal:item:get',
+		'animal:item:put',
+		'animal:collection:post',
+		'user:collection:get',
+		'user:item:get',
 	])]
 	private string $name;
 
 	#[ORM\Column(type: 'date')]
 	#[Groups([
-		'animal:entity:read',
-		'animal:entity:write'
+		'animal:collection:get',
+		'animal:item:get',
+		'animal:item:put',
+		'animal:collection:post'
 	])]
 	private ?DateTimeInterface $birthDate;
 
 	#[ORM\Column(type: 'date')]
 	#[Groups([
-		'animal:entity:read',
-		'animal:entity:write'
+		'animal:collection:get',
+		'animal:item:get',
+		'animal:item:put',
+		'animal:collection:post',
+		'user:collection:get',
+		'user:item:get',
 	])]
 	private ?DateTimeInterface $intakeDate;
 
 	#[ORM\Column(type: 'string', length: 2000)]
 	#[Groups([
-		'animal:entity:read',
-		'animal:entity:write'
+		'animal:collection:get',
+		'animal:item:get',
+		'animal:item:put',
+		'animal:collection:post'
 	])]
 	private ?string $description;
 
@@ -88,16 +129,16 @@ class Animal
 		targetEntity: Walk::class
 	)]
 	#[Groups([
-		'animal:entity:read'
+		'animal:item:get',
 	])]
 	private Collection $walks;
-	
+
 	#[ORM\OneToMany(
 		mappedBy: 'animal',
 		targetEntity: Adoption::class
 	)]
 	#[Groups([
-		'animal:entity:read'
+		'animal:item:get',
 	])]
 	private Collection $adoptions;
 
