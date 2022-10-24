@@ -5,3 +5,4 @@ controllers:
 auth:
     path: /auth
     methods: ['POST']
+    

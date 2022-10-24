@@ -10,7 +10,8 @@ final class Auth implements OpenApiFactoryInterface
 {
     public function __construct(
         private OpenApiFactoryInterface $decorated
-    ) {}
+    ) {
+    }
 
     public function __invoke(array $context = []): OpenApi
     {
@@ -46,7 +47,7 @@ final class Auth implements OpenApiFactoryInterface
             'scheme' => 'bearer',
             'bearerFormat' => 'JWT',
         ]);
-        
+
         $pathItem = new Model\PathItem(
             ref: 'JWT Token',
             post: new Model\Operation(
