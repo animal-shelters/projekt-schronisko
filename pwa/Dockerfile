@@ -7,6 +7,7 @@ WORKDIR /srv/app
 COPY package.json .
 RUN npm install --force 
 COPY . .
+RUN npm install react-scripts --force
 CMD ["npm", "start"]
 
 FROM node:18-alpine3.15 as build
