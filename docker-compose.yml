@@ -30,7 +30,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - node_modules:/srv/app/node_modules
+      - /srv/app/node_modules
     environment:
       SERVER_NAME: ${SERVER_NAME:-localhost}, pwa:3000
       NEXT_PUBLIC_ENTRYPOINT: http://caddy
@@ -92,7 +92,6 @@ volumes:
   php_socket:
   caddy_data:
   caddy_config:
-  node_modules:
 ###> doctrine/doctrine-bundle ###
   db_data:
 ###< doctrine/doctrine-bundle ###
