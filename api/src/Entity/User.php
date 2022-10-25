@@ -23,7 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(
 			normalizationContext: [
 				'groups' => 'user:collection:get'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN')"
 		),
 		new Post(
 			denormalizationContext: [
@@ -34,12 +35,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Get(
 			normalizationContext: [
 				'groups' => 'user:item:get'
-			]
+			],
+			security: "object == user"
 		),
 		new Put(
 			denormalizationContext: [
 				'groups' => 'user:item:put'
-			]
+			],
+			security: "object == user"
 		),
 	],
 	normalizationContext: [

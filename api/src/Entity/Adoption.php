@@ -18,17 +18,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(
 			normalizationContext: [
 				'groups' => 'adoption:collection:get'
-			]
+			],
 		),
 		new Post(
 			denormalizationContext: [
 				'groups' => 'adoption:collection:post'
-			]
+			],
 		),
 		new Get(
 			normalizationContext: [
 				'groups' => 'adoption:item:get'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object.user == user)"
 		),
 		new Put(
 			denormalizationContext: [
@@ -37,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Delete(),
 	],
+	security: "is_granted('ROLE_ADMIN')",
 	normalizationContext: [
 		'groups' => [
 			'adoption:collection:get',
@@ -47,7 +49,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		'groups' => [
 			'adoption:collection:post',
 			'adoption:item:put'
-		] 
+		]
 	],
 )]
 #[ORM\Entity()]
@@ -70,7 +72,7 @@ class Adoption
 		'adoption:item:put',
 	])]
 	private User $user;
-	
+
 	#[ORM\Id]
 	#[ORM\ManyToOne(
 		targetEntity: Animal::class,
