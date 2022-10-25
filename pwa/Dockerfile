@@ -4,9 +4,8 @@ FROM node:18-alpine3.15 as dev
 EXPOSE 3000
 ENV PORT 3000
 WORKDIR /srv/app
-COPY package.json package-lock.json /srv/app/
+COPY package.json .
 RUN npm install --force 
-ENV PATH /srv/app/node_modules/.bin:$PATH
 COPY . .
 CMD ["npm", "start"]
 
