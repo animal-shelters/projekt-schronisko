@@ -4,11 +4,10 @@ FROM node:18-alpine3.15 as dev
 EXPOSE 3000
 ENV PORT 3000
 WORKDIR /srv/app
-ENV PATH /srv/app/node_modules/.bin:$PATH
-COPY --link ./package.json /srv/app
-RUN npm i
-COPY --link . /srv/app
-CMD ["npm", "run", "docker-start"]
+COPY ./package.json .
+RUN npm install --force
+COPY . .
+CMD ["npm", "start"]
 
 FROM node:18-alpine3.15 as build
 WORKDIR /srv/app
