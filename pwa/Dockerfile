@@ -4,9 +4,9 @@ FROM node:18-alpine3.15 as dev
 EXPOSE 3000
 ENV PORT 3000
 WORKDIR /srv/app
+COPY package.json package-lock.json /srv/app/
+RUN npm install --no-optional 
 ENV PATH /srv/app/node_modules/.bin:$PATH
-COPY ./package.json /srv/app
-RUN npm i
 COPY . /srv/app
 CMD ["npm", "run", "docker-start"]
 
