@@ -7,8 +7,8 @@ WORKDIR /srv/app
 COPY package.json package-lock.json /srv/app/
 RUN npm install --force 
 ENV PATH /srv/app/node_modules/.bin:$PATH
-COPY . /srv/app
-CMD ["npm", "run", "docker-start"]
+COPY . .
+CMD ["npm", "start"]
 
 FROM node:18-alpine3.15 as build
 WORKDIR /srv/app
