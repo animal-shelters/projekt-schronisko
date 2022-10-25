@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import FormCreator from "./components/forms/FormCreator";
 import Header from "./components/Header";
+import Registration from "./components/Registration";
 import "./index.css";
 import AdminPanelView from "./routes/AdminPanel";
 import TempForm from "./routes/TempForm";
@@ -21,6 +22,7 @@ root.render(
                     <Route path="create_form" element={<FormCreator />} />
                 </Route>
                 <Route path="temp_form" element={<TempForm />} />
+                <Route path="register" element={<Registration />} />
             </Routes>
         </BrowserRouter>
 );
