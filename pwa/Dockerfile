@@ -5,9 +5,9 @@ EXPOSE 3000
 ENV PORT 3000
 WORKDIR /srv/app
 ENV PATH /srv/app/node_modules/.bin:$PATH
-COPY --link ./package.json /srv/app
+COPY ./package.json /srv/app
 RUN npm i
-COPY --link . /srv/app
+COPY . /srv/app
 CMD ["npm", "run", "docker-start"]
 
 FROM node:18-alpine3.15 as build
