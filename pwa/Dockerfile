@@ -5,7 +5,7 @@ EXPOSE 3000
 ENV PORT 3000
 WORKDIR /srv/app
 COPY package.json package-lock.json /srv/app/
-RUN npm install --no-optional 
+RUN npm install --force 
 ENV PATH /srv/app/node_modules/.bin:$PATH
 COPY . /srv/app
 CMD ["npm", "run", "docker-start"]
