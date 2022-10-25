@@ -8,7 +8,7 @@ ENV PATH /srv/app/node_modules/.bin:$PATH
 COPY --link ./package.json /srv/app
 RUN npm i
 COPY --link . /srv/app
-CMD ["npm", "start"]
+CMD ["npm", "run", "docker-start"]
 
 FROM node:18-alpine3.15 as build
 WORKDIR /srv/app
