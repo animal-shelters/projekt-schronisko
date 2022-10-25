@@ -24,7 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Post(
 			denormalizationContext: [
 				'groups' => 'animal:collection:post'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_EMPLOYEE')"
 		),
 		new Get(
 			normalizationContext: [
@@ -34,7 +35,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Put(
 			denormalizationContext: [
 				'groups' => 'animal:item:put'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_EMPLOYEE')"
 		),
 	],
 	normalizationContext: [
