@@ -7,11 +7,15 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\State\UserPostProcessor;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
@@ -19,22 +23,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(
 			normalizationContext: [
 				'groups' => 'user:collection:get'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN')"
 		),
 		new Post(
 			denormalizationContext: [
 				'groups' => 'user:collection:post'
-			]
+			],
+			processor: UserPostProcessor::class,
 		),
 		new Get(
 			normalizationContext: [
 				'groups' => 'user:item:get'
-			]
+			],
+			security: "object == user"
 		),
 		new Put(
 			denormalizationContext: [
 				'groups' => 'user:item:put'
-			]
+			],
+			security: "object == user"
 		),
 	],
 	normalizationContext: [
@@ -51,7 +59,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 	]
 )]
 #[ORM\Entity()]
-class User 
+#[ORM\Table(name: '`user`')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	#[ORM\Id]
 	#[ORM\GeneratedValue]
@@ -69,40 +78,47 @@ class User
 	#[Groups(
 		'user:collection:post',
 	)]
-	private string $login;
+	private string $email;
 	
 	#[ORM\Column(type: 'string', length: 255)]
-	#[Assert\NotNull()]
-	#[Groups(
-		'user:collection:post',
-	)]
 	private string $password;
+	
+	#[SerializedName('password')]
+	#[Assert\NotBlank(groups: ['user:collection:post'])]
+	#[Groups([
+		'user:collection:post',
+	])]
+	private ?string $plainPassword;
 
-	#[ORM\Column(type: 'string', length: 255)]
-	#[Assert\NotNull()]
-	#[Groups(
+	// #[Assert\NotBlank(groups: ['user:collection:post'])]
+	// #[Groups(
+	// 	'user:collection:post',
+	// )]
+	// private string $token;
+
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
 		'animal:collection:get',
 		'animal:item:get',
-	)]
-	private string $name;
+	])]
+	private ?string $name;
 
-	#[ORM\Column(type: 'string', length: 255)]
-	#[Assert\NotNull()]
-	#[Groups(
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
 		'animal:collection:get',
 		'animal:item:get',
-	)]
-	private string $surname;
+	])]
+	private ?string $surname;
 
-	#[ORM\Column(type: 'string', length: 11)]
+	#[ORM\Column(type: 'string', length: 11, nullable: true)]
 	#[Groups(
 		'user:collection:get',
 		'user:item:get',
@@ -111,82 +127,79 @@ class User
 	)]
 	private ?string $pesel;
 
-	#[ORM\Column(type: 'string', length: 255)]
-	#[Assert\NotNull()]
-	#[Groups(
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
-	)]
-	private string $phone;
+	])]
+	private ?string $phone;
 
-	#[ORM\Column(type: 'string', length: 255)]
-	#[Assert\NotNull()]
-	#[Assert\Choice(choices: ['volunteer', 'newOwner', 'employee'])]
-	#[Groups(
+	#[ORM\Column(type: 'json')]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
-	)]
-	private string $role;
+	])]
+	private array $roles = [];
 
-	#[ORM\Column(type: 'string', length: 255)]
-	#[Groups(
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
-	)]
+	])]
 	private ?string $street;
 	
-	#[ORM\Column(type: 'string', length: 5)]
-	#[Groups(
+	#[ORM\Column(type: 'string', length: 5, nullable: true)]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
-	)]
+	])]
 	private ?string $postalCode;
 
-	#[ORM\Column(type: 'string', length: 255)]
-	#[Groups(
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:collection:post',
 		'user:item:put',
-	)]
+	])]
 	private ?string $city;
 
 	#[ORM\OneToMany(
 		mappedBy: 'user',
 		targetEntity: Form::class
 	)]
-	#[Groups(
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-	)]
+	])]
 	private Collection $forms;
 
 	#[ORM\OneToMany(
 		mappedBy: 'user',
 		targetEntity: Walk::class
 	)]
-	#[Groups(
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-	)]
+	])]
 	private Collection $walks;
 
 	#[ORM\OneToMany(
 		mappedBy: 'user',
 		targetEntity: Adoption::class
 	)]
-	#[Groups(
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-	)]
+	])]
 	private Collection $adoptions;
 
 	public function __construct()
@@ -195,6 +208,16 @@ class User
 		$this->walks = new ArrayCollection();
 		$this->adoptions = new ArrayCollection();
 	}
+	
+	public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
+
+	public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
 
 	/**
 	 * Get the value of id
@@ -216,30 +239,6 @@ class User
 	public function setId(?int $id): self
 	{
 		$this->id = $id;
-
-		return $this;
-	}
-
-	/**
-	 * Get the value of login
-	 *
-	 * @return string
-	 */
-	public function getLogin(): string
-	{
-		return $this->login;
-	}
-
-	/**
-	 * Set the value of login
-	 *
-	 * @param string $login
-	 *
-	 * @return self
-	 */
-	public function setLogin(string $login): self
-	{
-		$this->login = $login;
 
 		return $this;
 	}
@@ -360,30 +359,6 @@ class User
 	public function setPhone(string $phone): self
 	{
 		$this->phone = $phone;
-
-		return $this;
-	}
-
-	/**
-	 * Get the value of role
-	 *
-	 * @return string
-	 */
-	public function getRole(): string
-	{
-		return $this->role;
-	}
-
-	/**
-	 * Set the value of role
-	 *
-	 * @param string $role
-	 *
-	 * @return self
-	 */
-	public function setRole(string $role): self
-	{
-		$this->role = $role;
 
 		return $this;
 	}
@@ -530,6 +505,70 @@ class User
 	public function setCity($city)
 	{
 		$this->city = $city;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of roles
+	 */ 
+	public function getRoles(): array
+	{
+		$roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+	}
+
+	/**
+	 * Set the value of roles
+	 *
+	 * @return  self
+	 */ 
+	public function setRoles($roles)
+	{
+		$this->roles = $roles;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of email
+	 */ 
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	/**
+	 * Set the value of email
+	 *
+	 * @return  self
+	 */ 
+	public function setEmail($email)
+	{
+		$this->email = $email;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of plainPassword
+	 */ 
+	public function getPlainPassword()
+	{
+		return $this->plainPassword;
+	}
+
+	/**
+	 * Set the value of plainPassword
+	 *
+	 * @return  self
+	 */ 
+	public function setPlainPassword($plainPassword)
+	{
+		$this->plainPassword = $plainPassword;
 
 		return $this;
 	}

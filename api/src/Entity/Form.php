@@ -15,19 +15,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 		new GetCollection(
 			normalizationContext: [
 				'groups' => 'form:collection:get'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN')",
 		),
 		new Post(
 			denormalizationContext: [
 				'groups' => 'form:collection:post'
-			]
+			],
+			security: "is_granted('ROLE_USER')",
 		),
 		new Get(
 			normalizationContext: [
 				'groups' => 'form:item:get'
-			]
+			],
+			security: "is_granted('ROLE_USER') && object.user == user",
 		),
-		new Delete()
+		new Delete(
+			security: "is_granted('ROLE_USER') && object.user == user",
+		),
 	],
 	normalizationContext: [
 		'groups' => [

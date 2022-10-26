@@ -29,7 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Get(
 			normalizationContext: [
 				'groups' => 'walk:item:get'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object.user == user)"
 		),
 		new Put(
 			denormalizationContext: [
@@ -38,6 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Delete()
 	],
+	security: "is_granted('ROLE_ADMIN')",
 	normalizationContext: [
 		'groups' => [
 			'walk:collection:get',

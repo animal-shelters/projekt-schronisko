@@ -22,7 +22,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 		new Post(
 			denormalizationContext: [
 				'groups' => 'form_scheme:collection:post'
-			]
+			],
+			security: "is_granted('ROLE_ADMIN')"
 		),
 		new Get(
 			normalizationContext: [
@@ -30,6 +31,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 			]
 		),
 	],
+	security: "is_granted('ROLE_USER')",
 	normalizationContext: [
 		'groups' => [
 			'form_scheme:collection:get',
