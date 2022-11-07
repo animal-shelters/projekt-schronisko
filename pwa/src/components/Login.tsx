@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import PrimaryButton from "./PrimaryButton";
 
 function Login(): JSX.Element {
   interface loginSchema {
@@ -48,7 +49,7 @@ function Login(): JSX.Element {
             {errors.password && touched.password ? (
               <div>{errors.password}</div>
             ) : null}
-            <button type="submit">Zarejestruj się</button>
+            <PrimaryButton type="submit" className="bg-primary dark:bg-primaryDark dark:text-white">Zaloguj się</PrimaryButton>
           </Form>
         )}
       </Formik>

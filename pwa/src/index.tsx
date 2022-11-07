@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import 'tw-elements';
 import App from "./App";
 import FormCreator from "./components/forms/FormCreator";
 import Header from "./components/Header";
