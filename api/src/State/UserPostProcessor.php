@@ -19,9 +19,6 @@ class UserPostProcessor implements ProcessorInterface
     {
         $this->hashPassword($data);
         $this->updateRoles($data);
-        // echo '<pre>';
-        // var_dump($data);
-        // echo '</pre>';
         $this->decorated->process($data, $operation, $uriVariables, $context);
 
         return $data;
