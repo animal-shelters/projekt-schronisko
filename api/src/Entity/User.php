@@ -90,17 +90,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	])]
 	private ?string $plainPassword;
 
-	// #[Assert\NotBlank(groups: ['user:collection:post'])]
-	// #[Groups(
-	// 	'user:collection:post',
-	// )]
-	// private string $token;
-
 	#[ORM\Column(type: 'string', length: 255, nullable: true)]
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 		'animal:collection:get',
 		'animal:item:get',
@@ -111,7 +104,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 		'animal:collection:get',
 		'animal:item:get',
@@ -122,7 +114,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups(
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 	)]
 	private ?string $pesel;
@@ -131,7 +122,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 	])]
 	private ?string $phone;
@@ -140,7 +130,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 	])]
 	private array $roles = [];
@@ -149,7 +138,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 	])]
 	private ?string $street;
@@ -158,7 +146,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 	])]
 	private ?string $postalCode;
@@ -167,7 +154,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
-		'user:collection:post',
 		'user:item:put',
 	])]
 	private ?string $city;
