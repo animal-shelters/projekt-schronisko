@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	)]
 	private ?int $id;
 
-	#[ORM\Column(type: 'string', length: 255)]
+	#[ORM\Column(type: 'string', length: 255, unique: true)]
 	#[Assert\NotNull()]
 	#[Assert\Unique()]
 	#[Groups(
