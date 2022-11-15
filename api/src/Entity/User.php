@@ -42,7 +42,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 			denormalizationContext: [
 				'groups' => 'user:item:put'
 			],
-			security: "object == user"
+			security: "object == user",
+			processor: UserPostProcessor::class,
 		),
 	],
 	normalizationContext: [
