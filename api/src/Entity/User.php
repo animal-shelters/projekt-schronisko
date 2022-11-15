@@ -76,6 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	#[ORM\Column(type: 'string', length: 255)]
 	#[Assert\NotNull()]
+	#[Assert\Unique()]
 	#[Groups(
 		'user:collection:post',
 	)]
