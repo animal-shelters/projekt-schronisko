@@ -80,6 +80,12 @@ final class Auth implements OpenApiFactoryInterface
             ),
         );
         $openApi->getPaths()->addPath('/auth', $pathItem);
+        $openApi->getPaths()->addPath('/auth/user', new Model\PathItem(
+            ref: 'User from JWT',
+            get: new Model\Operation(
+                tags: ['Auth']
+            )
+            ));
 
         return $openApi;
     }

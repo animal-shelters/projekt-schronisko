@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\UserAuthController;
 use App\State\UserPostProcessor;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,7 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 			normalizationContext: [
 				'groups' => 'user:item:get'
 			],
-			security: "object == user"
+			security: "object == user",
 		),
 		new Put(
 			denormalizationContext: [
@@ -70,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:collection:get',
 		'user:item:get',
 		'animal:collection:get',
-		'animal:item:get',
+		'animal:item:get'
 	)]
 	private ?int $id;
 

@@ -5,4 +5,9 @@ controllers:
 auth:
     path: /auth
     methods: ['POST']
+
+auth_user:
+    path: /auth/user
+    methods: ['GET']
+    controller: App\Controller\UserAuthController.php
     
