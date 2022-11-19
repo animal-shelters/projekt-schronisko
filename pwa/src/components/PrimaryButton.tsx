@@ -10,6 +10,7 @@ function PrimaryButton(props: Props): JSX.Element {
     <button
       onClick={props.onClick}
       className="bg-primary hover:big-primary-hover dark:bg-primary-dark dark:hover:bg-primary-dark-hover dark:text-white px-6 py-2 rounded-xl"
+      type={props.type}
     >
       {props.children}
     </button>

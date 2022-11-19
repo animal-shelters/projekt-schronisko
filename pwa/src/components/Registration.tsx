@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import axiosInstance from "../utils/axiosInstance";
 
 interface registrationSchema {
   email: string;
@@ -22,8 +23,8 @@ const registrationValidationSchema = Yup.object().shape({
 
 function Registration(): JSX.Element {
   const handleRegistration = (data: registrationSchema) => {
-    axios
-      .post("https://localhost/users", data)
+    axiosInstance
+      .post("users", data)
       .then((response) => {
         console.log(response.data);
       })
