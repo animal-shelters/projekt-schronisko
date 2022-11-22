@@ -20,9 +20,6 @@ function Protected(props: { children: JSX.Element }): JSX.Element {
   return (user && user.roles.includes(Role.admin) ? props.children : Unathorized())
 }
 
-const fs = require('fs');
-fs.writeFile("test.txt", "asdf");
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
