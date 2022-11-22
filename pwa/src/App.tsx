@@ -41,7 +41,7 @@ function App() {
           </div>
           <div className="carousel-item relative float-left w-full">
             <img
-              src="https://www.placecage.com/1920/800"
+              src="https://loremflickr.com/1920/800"
               className="block w-full"
               alt="..."
             />
