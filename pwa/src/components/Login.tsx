@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axiosInstance from "../utils/axiosInstance";
 import useToken from "../utils/useToken";
@@ -28,7 +29,8 @@ function Login(): JSX.Element {
       .then((response) => {
         console.log(response.data);
         setToken(response.data.token);
-        axiosInstance.get("auth/user", {headers: { 'Authorization': `Bearer ${response.data.token}` }}).then((response) => setUser({id: response.data.id, roles: response.data[0].roles}));
+        window.location.replace('/');
+        axiosInstance.get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } }).then((response) => setUser({ id: response.data.id, roles: response.data[0].roles }));
       })
       .catch((error) => {
         console.log(error);
