@@ -10,6 +10,7 @@ services:
     restart: unless-stopped
     volumes:
       - php_socket:/var/run/php
+      - media:/srv/api/public/media:rw
     healthcheck:
       interval: 10s
       timeout: 3s
@@ -56,6 +57,7 @@ services:
       - php_socket:/var/run/php
       - caddy_data:/data
       - caddy_config:/config
+      - media:/srv/api/public/media:rw
     ports:
       # HTTP
       - target: 80
@@ -94,6 +96,7 @@ volumes:
   caddy_config:
 ###> doctrine/doctrine-bundle ###
   db_data:
+  media:
 ###< doctrine/doctrine-bundle ###
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
