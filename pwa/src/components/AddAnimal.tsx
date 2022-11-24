@@ -2,10 +2,8 @@ import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import useToken from "../utils/useToken";
-import DatePickerField from "./forms/DatePickerField";
 import PrimaryButton from "./PrimaryButton";
 import UploadComponent from "./UploadImage";
-import DatePicker from "react-datepicker";
 
 function AddAnimal() {
     const { token } = useToken();
