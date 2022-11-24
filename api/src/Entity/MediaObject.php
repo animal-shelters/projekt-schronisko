@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity()]
 #[ApiResource(
     normalizationContext: [
-        'groups' => ['media_object:read']
+        'groups' => ['media_object:get']
     ],
     types: ['https://schema.org/MediaObject'],
     operations: [
@@ -78,6 +78,12 @@ class MediaObject
 
     #[ORM\Column(nullable: true)]
     private ?string $filePath = null;
+
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups([
+        'media_object:get'
+    ])]
+    private ?bool $isMain = false;
 
     /**
      * Get the value of id
@@ -175,6 +181,26 @@ class MediaObject
     public function setDomain($domain)
     {
         $this->domain = $domain;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isMain
+     */ 
+    public function getIsMain()
+    {
+        return $this->isMain;
+    }
+
+    /**
+     * Set the value of isMain
+     *
+     * @return  self
+     */ 
+    public function setIsMain($isMain)
+    {
+        $this->isMain = $isMain;
 
         return $this;
     }

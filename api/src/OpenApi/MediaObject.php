@@ -41,6 +41,10 @@ final class MediaObject implements OpenApiFactoryInterface
                                             'type' => 'string',
                                             'description' => 'MediaObject domain',
                                         ],
+                                        'isMain' => [
+                                            'type' => 'boolean',
+                                            'description' => 'Is it main image'
+                                        ]
                                     ],
                                 ],
                             ],
