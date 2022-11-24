@@ -29,8 +29,7 @@ function Login(): JSX.Element {
       .then((response) => {
         console.log(response.data);
         setToken(response.data.token);
-        window.location.replace('/');
-        axiosInstance.get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } }).then((response) => setUser({ id: response.data.id, roles: response.data[0].roles }));
+        axiosInstance.get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } }).then((response) => { setUser({ id: response.data.id, roles: response.data[0].roles }); window.location.replace('/'); });
       })
       .catch((error) => {
         console.log(error);
