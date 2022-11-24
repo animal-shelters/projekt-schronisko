@@ -1,16 +1,13 @@
 import ImageUploader from "react-images-upload";
 
 interface Props {
-    imgExtension? : string[];
+    imgExtension?: string[];
     maxFileSize?: number;
     handleChange: (pictures: Array<any>) => void;
 }
 
 function UploadComponent(props: Props) {
     const onDrop = (pictureFiles: any, pictureDataURLs: any) => {
-    //   const newImagesUploaded = pictureDataURLs.slice(
-    //     props.defaultImages.length
-    //   );
       props.handleChange(pictureDataURLs);
     };
   
@@ -30,4 +27,3 @@ function UploadComponent(props: Props) {
   }
   
   export default UploadComponent;
-  

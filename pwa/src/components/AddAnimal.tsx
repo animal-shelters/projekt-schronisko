@@ -29,7 +29,7 @@ function AddAnimal() {
     return (
         <div>
             Dodaj Zwierzę
-            <UploadComponent maxFileSize={123456789} imgExtension={[".jpg", ".png"]} handleChange={handleChange} />
+            <UploadComponent maxFileSize={5000000} imgExtension={[".jpg", ".png"]} handleChange={handleChange} />
             <Formik
                 initialValues={{}}
                 onSubmit={(values) => handleSubmit(values)}>
