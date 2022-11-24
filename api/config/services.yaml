@@ -28,6 +28,10 @@ services:
         decorates: 'api_platform.openapi.factory'
         arguments: ['@.inner']
 
+    App\OpenApi\MediaObject:
+        decorates: 'api_platform.openapi.factory'
+        autoconfigure: false
+
     App\Command\CreateAdminCommand:
         arguments:
             $devEmail: '%env(DEV_EMAIL)%'
