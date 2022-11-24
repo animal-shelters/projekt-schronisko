@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./App.css";
 
 function App() {
@@ -76,9 +77,11 @@ function App() {
             alt="..."
           />
         </div>
-        <button className="mt-5 inline-block px-6 py-2.5 border border-blue-600 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:text-white hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:text-white focus:outline-none focus:ring-0 active:bg-blue-800 active:text-white active:shadow-lg transition duration-150 ease-in-out">
-          Wszystkie zwierzęta
-        </button>
+        <Link to="/animals">
+          <button className="mt-5 inline-block px-6 py-2.5 border border-blue-600 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:text-white hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:text-white focus:outline-none focus:ring-0 active:bg-blue-800 active:text-white active:shadow-lg transition duration-150 ease-in-out">
+            Wszystkie zwierzęta
+          </button>
+        </Link>
       </div>
       <div className="w-3/5 mx-auto mt-8 pb-8 border-b border-gray-100">
         <h2>O schronisku</h2>

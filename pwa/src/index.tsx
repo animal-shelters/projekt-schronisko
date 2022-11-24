@@ -12,7 +12,7 @@ import "./index.css";
 import { Role } from "./models/role-type";
 import Unathorized from "./routes/401";
 import AdminPanelView from "./routes/AdminPanel";
-// import AnimalsPage from "./routes/AnimalsPage";
+import AnimalsPage from "./routes/AnimalsPage";
 import TempForm from "./routes/TempForm";
 import useUser from "./utils/useUser";
 
@@ -35,7 +35,7 @@ root.render(
         <Route path="create_form" element={<FormCreator />} />
         <Route path="add_animal" element={<AddAnimal />} />
       </Route>
-      {/* <Route path="animals" element={<AnimalsPage />} /> */}
+      <Route path="animals" element={<AnimalsPage />} />
       <Route path="temp_form" element={<TempForm />} />
       <Route path="register" element={<Registration />} />
       <Route path="login" element={<Login />} />
