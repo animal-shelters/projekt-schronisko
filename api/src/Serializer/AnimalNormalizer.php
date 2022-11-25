@@ -29,7 +29,7 @@ final class AnimalNormalizer implements ContextAwareNormalizerInterface, Normali
         $object->setHighlightedImage(
             $mediaObject ? 'media/' . $mediaObject->getFilePath() : ''
         );
-        
+
         return $this->normalizer->normalize($object, $format, $context);
     }
 
