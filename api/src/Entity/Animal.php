@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Repository\AnimalRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -144,6 +145,12 @@ class Animal
 		'animal:item:get',
 	])]
 	private Collection $adoptions;
+
+	#[Groups([
+		'animal:item:get',
+		'animal:collection:get'
+	])]
+	private ?string $highlightedImage = null;
 
 	public function __construct()
 	{
@@ -337,5 +344,25 @@ class Animal
 	public function getAdoptions(): Collection
 	{
 		return $this->adoptions;
+	}
+
+	/**
+	 * Get the value of highlightedImage
+	 */ 
+	public function getHighlightedImage()
+	{
+		return $this->highlightedImage;
+	}
+
+	/**
+	 * Set the value of highlightedImage
+	 *
+	 * @return  self
+	 */ 
+	public function setHighlightedImage($highlightedImage)
+	{
+		$this->highlightedImage = $highlightedImage;
+
+		return $this;
 	}
 }
