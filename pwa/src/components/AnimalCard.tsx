@@ -1,9 +1,10 @@
 import { HtmlHTMLAttributes, HTMLProps } from "react";
+import { Link } from "react-router-dom";
 import Animal from "../models/animal.dto";
 
 function AnimalCard({ id, name, intakeDate }: Animal): JSX.Element {
     return (
-        <a href="#!">
+        <Link to={`/animals/${id}`}>
             <div className="rounded-lg shadow-lg bg-white max-w-sm">
                 <img
                     src="https://dummyimage.com/300x300/fff/aaa"
@@ -17,7 +18,7 @@ function AnimalCard({ id, name, intakeDate }: Animal): JSX.Element {
                     </p>
                 </div>
             </div>
-        </a>
+        </Link>
     );
 }
 
