@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Controller\MediaObject\Create;
+use App\Repository\MediaObjectRepository;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[Vich\Uploadable]
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
 #[ApiResource(
     normalizationContext: [
         'groups' => ['media_object:get']
