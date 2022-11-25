@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Repository\AnimalRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -55,6 +56,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 	]
 )]
 #[ORM\Entity()]
+#[ApiFilter(
+	OrderFilter::class,
+	properties: ['intakeDate']
+)]
 class Animal
 {
 	#[ORM\Id]
@@ -348,7 +353,7 @@ class Animal
 
 	/**
 	 * Get the value of highlightedImage
-	 */ 
+	 */
 	public function getHighlightedImage()
 	{
 		return $this->highlightedImage;
@@ -358,7 +363,7 @@ class Animal
 	 * Set the value of highlightedImage
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setHighlightedImage($highlightedImage)
 	{
 		$this->highlightedImage = $highlightedImage;
