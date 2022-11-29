@@ -11,21 +11,15 @@ function AddAnimal() {
     const [pictures, setPictures] = useState<Array<any>>([]);
 
     function handleChange(files: Array<any>) {
-        const picturesTemp = pictures;
-
         setPictures(files)
     };
 
     async function handleSubmit(data: any) {
         axiosInstance.post("animals", data, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
-                console.log(response)
-
                 pictures.map((picture, index) => {
                     urlToFile(picture, index.toString())
                         .then((file) => {
-                            console.log('plik2')
-                            console.log(file);
                             axiosInstance.post("media_objects", { file: file, domain: `animal/${response.data.id}` }, { headers: { 'Authorization': `Bearer ${token}`, "Content-Type": "multipart/form-data" } })
                                 .then((response) => console.log(response));
                         });

@@ -3,15 +3,12 @@ export function urlToFile(url: string, fileName: string): Promise<File | undefin
     return fetch(url)
         .then(res => res.blob())
         .then(blob => {
-            console.log("plik: ")
-
-            const file = new File([blob], fileName + '.' + fileType.substring(fileType.search('/')+1), { type: fileType });
-            console.log(file)
+            const file = new File([blob], fileName + '.' + fileType.substring(fileType.search('/') + 1), { type: fileType });
             return file;
         })
         .catch((error) => {
             console.error(error);
             return undefined;
         });
-    
+
 }
