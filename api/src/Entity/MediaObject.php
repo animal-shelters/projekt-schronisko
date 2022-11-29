@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Action\NotFoundAction;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
@@ -10,6 +11,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Controller\MediaObject\Create;
 use App\Repository\MediaObjectRepository;
 use Symfony\Component\HttpFoundation\File\File;
@@ -21,20 +23,22 @@ use Doctrine\ORM\Mapping as ORM;
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaObjectRepository::class)]
 #[ApiResource(
-    normalizationContext: [
-        'groups' => ['media_object:get']
-    ],
     types: ['https://schema.org/MediaObject'],
     operations: [
         new GetCollection(
             normalizationContext: [
-                'media_object:get'
+                'groups' => 'media_object:collection:get'
             ]
         ),
         new Get(
             controller: NotFoundAction::class,
             read: false,
-            output: false
+            output: false,
+        ),
+        new Put(
+            denormalizationContext: [
+                'groups' => 'media_object:item:put'
+            ]
         ),
         new Post(
             controller: Create::class,
@@ -47,12 +51,29 @@ use Doctrine\ORM\Mapping as ORM;
             ],
             security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_EMPLOYEE')"
         )
-    ]
+    ],
+    normalizationContext: [
+        'groups' => [
+            'media_object:collection:get'
+        ]
+    ],
+    denormalizationContext: [
+        'groups' => [
+            'media_object:collection:post',
+            'media_object:item:put'
+        ]
+    ],
 )]
 #[ApiFilter(
     SearchFilter::class,
     properties: [
         'domain' => 'exact'
+    ],
+)]
+#[ApiFilter(
+    BooleanFilter::class,
+    properties: [
+        'isMain'
     ]
 )]
 class MediaObject
@@ -64,7 +85,7 @@ class MediaObject
 
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     #[Groups([
-        'media_object:get'
+        'media_object:collection:get'
     ])]
     private ?string $contentUrl = null;
 
@@ -82,7 +103,7 @@ class MediaObject
 
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups([
-        'media_object:get'
+        'media_object:item:put'
     ])]
     private ?bool $isMain = false;
 
@@ -188,7 +209,7 @@ class MediaObject
 
     /**
      * Get the value of isMain
-     */ 
+     */
     public function getIsMain()
     {
         return $this->isMain;
@@ -198,7 +219,7 @@ class MediaObject
      * Set the value of isMain
      *
      * @return  self
-     */ 
+     */
     public function setIsMain($isMain)
     {
         $this->isMain = $isMain;
