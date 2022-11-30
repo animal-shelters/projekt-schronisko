@@ -6,4 +6,5 @@ export default interface Animal {
     birthDate: Date;
     intakeDate: Date;
     description: string;
+    highlightedImage: string;
 }

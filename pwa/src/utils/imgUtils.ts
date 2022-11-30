@@ -12,3 +12,14 @@ export function urlToFile(url: string, fileName: string): Promise<File | undefin
         });
 
 }
+
+export function mapResponseToUrls(response: any) {
+    const urls: string[] = [];
+    if (response.data["hydra:member"].length == 0) {
+        return [];
+    }
+    response.data["hydra:member"].map((member: any) => {
+        urls.push(member.contentUrl);
+    });
+    return urls;
+}

@@ -1,14 +1,14 @@
-import { HtmlHTMLAttributes, HTMLProps } from "react";
 import { Link } from "react-router-dom";
+import { backendBaseUrl } from "../utils/axiosInstance";
 import Animal from "../models/animal.dto";
 
-function AnimalCard({ id, name, intakeDate }: Animal): JSX.Element {
+function AnimalCard({ id, name, intakeDate, highlightedImage }: Animal): JSX.Element {
     return (
         <Link to={`/animals/${id}`}>
             <div className="rounded-lg shadow-lg bg-white max-w-sm">
                 <img
-                    src="https://dummyimage.com/300x300/fff/aaa"
-                    className="rounded-t-lg"
+                    src={highlightedImage ? backendBaseUrl + highlightedImage : "https://dummyimage.com/300x300/fff/aaa"}
+                    className="rounded-t-lg mx-auto"
                     alt="..."
                 />
                 <div className="p-6">

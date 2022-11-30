@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import Animal from "../models/animal.dto";
-import axiosInstance from "../utils/axiosInstance";
+import axiosInstance, { backendBaseUrl } from "../utils/axiosInstance";
+import { mapResponseToUrls } from "../utils/imgUtils";
 
 function AnimalDetailsPage() {
     const { id } = useParams();
     const [isLoading, setIsLoading] = useState(false);
+    const [areImagesLoading, setAreImagesLoading] = useState(false);
+    const [images, setImages] = useState<Array<string> | null>(null);
     const [animal, setAnimal] = useState<Animal | null>(null);
 
     useEffect(() => {
@@ -16,11 +19,36 @@ function AnimalDetailsPage() {
                 setAnimal(response.data);
                 setIsLoading(false);
             })
+            .then((response) => {
+                setAreImagesLoading(true);
+                axiosInstance.get(`media_objects`, { params: { domain: `animal/${id}`, page: 1, isMain: false } })
+                    .then((response) => {
+                        setImages(mapResponseToUrls(response));
+                        setAreImagesLoading(false);
+                    });
+            })
             .catch((error) => {
                 console.log(error);
                 setIsLoading(false);
             });
     }, [])
+
+    const ImagesComponent = () => {
+        if (images != undefined && images.length != 0) {
+            return (
+                <div className={`grid grid-cols-1 md:grid-cols-${images?.length ? Math.min(images?.length, 3).toString() : '3'} gap-8 justify-items-center mt-16 items-center`}>
+                    {images?.map((image, index) => {
+                        return <img key={index} src={backendBaseUrl + image} alt="Zdjęcie zwierzęcia" />
+                    })}
+                </div>
+            )
+        }
+        return (
+            <h2 className="text-3xl font-bold text-center mt-16">
+                Brak zdjęć
+            </h2>
+        )
+    }
 
 
     return (
@@ -61,24 +89,16 @@ function AnimalDetailsPage() {
                                     </table>
                                 </div>
                                 <img
-                                    src="https://dummyimage.com/300x300/fff/aaa"
+                                    src={animal.highlightedImage ? backendBaseUrl + animal.highlightedImage : "https://dummyimage.com/300x300/fff/aaa"}
                                     alt="..."
                                 />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center mt-16 items-center">
-                                <img
-                                    src="https://dummyimage.com/300x300/fff/aaa"
-                                    alt="..."
-                                />
-                                <img
-                                    src="https://dummyimage.com/300x300/fff/aaa"
-                                    alt="..."
-                                />
-                                <img
-                                    src="https://dummyimage.com/300x300/fff/aaa"
-                                    alt="..."
-                                />
-                            </div>
+                            <h1 className="text-3xl font-bold text-center mt-16">Zdjęcia</h1>
+                            {areImagesLoading
+                                ? <Spinner />
+                                : <ImagesComponent />
+                            }
+
                         </>
                         : <h1 className="text-3xl font-bold text-center mt-16">Nie znaleziono zwierzęcia</h1>}
 
