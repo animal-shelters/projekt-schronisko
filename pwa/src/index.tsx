@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import 'tw-elements';
 import App from "./App";
-import AddAnimal from "./components/AddAnimal";
+import AnimalForm from "./components/AnimalForm";
 import FormCreator from "./components/forms/FormCreator";
 import Header from "./components/Header";
 // import LandingPageEdit from "./components/LandingPageEdit";
@@ -34,7 +34,8 @@ root.render(
       <Route path="admin_panel" element={<Protected ><AdminPanelView /></Protected>}>
         {/* <Route path="edit_landing_page" element={<LandingPageEdit />} /> */}
         <Route path="create_form" element={<FormCreator />} />
-        <Route path="add_animal" element={<AddAnimal />} />
+        <Route path="add_animal" element={<AnimalForm />} />
+        <Route path="edit_animal/:id" element={<AnimalForm />} />
       </Route>
       <Route path="animals" element={<AnimalsPage />} />
       <Route path="animals/:id" element={<AnimalDetailsPage />} />
