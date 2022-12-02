@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Filter\UnAdoptedAnimalsFilter;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -60,6 +61,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 	OrderFilter::class,
 	properties: ['intakeDate']
 )]
+#[ApiFilter(UnAdoptedAnimalsFilter::class)]
 class Animal
 {
 	#[ORM\Id]
