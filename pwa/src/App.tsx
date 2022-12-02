@@ -1,7 +1,28 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./App.css";
+import AnimalCard from "./components/AnimalCard";
+import Spinner from "./components/Spinner";
+import Animal from "./models/animal.dto";
+import axiosInstance from "./utils/axiosInstance";
 
 function App() {
+  const [newestAnimals, setNewestAnimals] = useState<Array<Animal>>([]);
+  const [areAnimalsLoaind, setAreAnimalsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setAreAnimalsLoading(true);
+    axiosInstance.get("animals", { params: { page: 1, itemsPerPage: 3, "order[intakeDate]": "desc" } })
+      .then((result: any) => {
+        setNewestAnimals(result.data["hydra:member"]);
+        setAreAnimalsLoading(false);
+      })
+      .catch((error) => {
+        alert("Wystąpił nieoczekiwany problem. Spróbuj ponownie.");
+        console.error(error);
+      })
+  }, [])
+
   return (
     <div className="App">
       <div
@@ -61,21 +82,17 @@ function App() {
       <div className="w-3/5 mx-auto mt-16 border-b border-gray-100 pb-8">
         <h2>Nowi w schronisku</h2>
         <div className="flex mt-5 justify-center gap-8">
-          <img
-            src="https://dummyimage.com/300x300/fff/aaa"
-            className="inline-block border border-gray-400"
-            alt="..."
-          />
-          <img
-            src="https://dummyimage.com/300x300/fff/aaa"
-            className="inline-block border border-gray-400"
-            alt="..."
-          />
-          <img
-            src="https://dummyimage.com/300x300/fff/aaa"
-            className="inline-block border border-gray-400"
-            alt="..."
-          />
+          {areAnimalsLoaind
+            ? <Spinner />
+            : newestAnimals && newestAnimals.length > 0 ? newestAnimals.map((animal) => {
+              return (
+                <div key={animal.id}>
+                  <AnimalCard {...animal} />
+                </div>
+              )
+            })
+              : <h3>Brak zwierząt w schronisku</h3>
+          }
         </div>
         <Link to="/animals">
           <button className="mt-5 inline-block px-6 py-2.5 border border-blue-600 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:text-white hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:text-white focus:outline-none focus:ring-0 active:bg-blue-800 active:text-white active:shadow-lg transition duration-150 ease-in-out">
