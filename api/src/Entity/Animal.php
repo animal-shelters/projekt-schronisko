@@ -22,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 	operations: [
 		new GetCollection(
 			normalizationContext: [
-				'groups' => 'animal:collection:get'
+				'groups' => 'animal:collection:get',
+				'datetime_format' => 'd.m.Y'
 			]
 		),
 		new Post(
@@ -33,7 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Get(
 			normalizationContext: [
-				'groups' => 'animal:item:get'
+				'groups' => 'animal:item:get',
+				'datetime_format' => 'd.m.Y'
 			]
 		),
 		new Put(
