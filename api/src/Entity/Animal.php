@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 	operations: [
 		new GetCollection(
 			normalizationContext: [
-				'groups' => 'animal:collection:get',
+				'groups' => 'animal:collection:get'
 			]
 		),
 		new Post(
@@ -72,8 +72,6 @@ class Animal
 		'animal:item:get',
 		'user:collection:get',
 		'user:item:get',
-		'adoption:collection:get',
-		'adoption:item:get'
 	])]
 	private ?int $id;
 
@@ -83,9 +81,7 @@ class Animal
 		'animal:collection:get',
 		'animal:item:get',
 		'animal:item:put',
-		'animal:collection:post',
-		'adoption:collection:get',
-		'adoption:item:get'
+		'animal:collection:post'
 	])]
 	private string $species;
 
@@ -94,9 +90,7 @@ class Animal
 		'animal:collection:get',
 		'animal:item:get',
 		'animal:item:put',
-		'animal:collection:post',
-		'adoption:collection:get',
-		'adoption:item:get'
+		'animal:collection:post'
 	])]
 	private ?string $breed;
 
@@ -109,8 +103,6 @@ class Animal
 		'animal:collection:post',
 		'user:collection:get',
 		'user:item:get',
-		'adoption:collection:get',
-		'adoption:item:get'
 	])]
 	private string $name;
 
@@ -119,9 +111,7 @@ class Animal
 		'animal:collection:get',
 		'animal:item:get',
 		'animal:item:put',
-		'animal:collection:post',
-		'adoption:collection:get',
-		'adoption:item:get'
+		'animal:collection:post'
 	])]
 	private ?DateTimeInterface $birthDate;
 
@@ -133,8 +123,6 @@ class Animal
 		'animal:collection:post',
 		'user:collection:get',
 		'user:item:get',
-		'adoption:collection:get',
-		'adoption:item:get'
 	])]
 	private ?DateTimeInterface $intakeDate;
 
@@ -143,9 +131,7 @@ class Animal
 		'animal:collection:get',
 		'animal:item:get',
 		'animal:item:put',
-		'animal:collection:post',
-		'adoption:collection:get',
-		'adoption:item:get'
+		'animal:collection:post'
 	])]
 	private ?string $description;
 
@@ -169,9 +155,7 @@ class Animal
 
 	#[Groups([
 		'animal:item:get',
-		'animal:collection:get',
-		'adoption:collection:get',
-		'adoption:item:get'
+		'animal:collection:get'
 	])]
 	private ?string $highlightedImage = null;
 
