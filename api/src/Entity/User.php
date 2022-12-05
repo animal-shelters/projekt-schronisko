@@ -71,7 +71,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:collection:get',
 		'user:item:get',
 		'animal:collection:get',
-		'animal:item:get'
+		'animal:item:get',
+		'adoption:collection:get',
+		'adoption:item:get'
 	)]
 	private ?int $id;
 
@@ -81,10 +83,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:collection:post',
 	)]
 	private string $email;
-	
+
 	#[ORM\Column(type: 'string', length: 255)]
 	private string $password;
-	
+
 	#[SerializedName('password')]
 	#[Assert\NotBlank(groups: ['user:collection:post'])]
 	#[Groups([
@@ -99,6 +101,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:put',
 		'animal:collection:get',
 		'animal:item:get',
+		'adoption:collection:get',
+		'adoption:item:get'
 	])]
 	private ?string $name;
 
@@ -109,15 +113,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:put',
 		'animal:collection:get',
 		'animal:item:get',
+		'adoption:collection:get',
+		'adoption:item:get'
 	])]
 	private ?string $surname;
 
 	#[ORM\Column(type: 'string', length: 11, nullable: true)]
-	#[Groups(
+	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:item:put',
-	)]
+		'adoption:collection:get',
+		'adoption:item:get'
+	])]
 	private ?string $pesel;
 
 	#[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -125,6 +133,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:collection:get',
 		'user:item:get',
 		'user:item:put',
+		'adoption:collection:get',
+		'adoption:item:get'
 	])]
 	private ?string $phone;
 
@@ -141,14 +151,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:collection:get',
 		'user:item:get',
 		'user:item:put',
+		'adoption:collection:get',
+		'adoption:item:get'
 	])]
 	private ?string $street;
-	
+
 	#[ORM\Column(type: 'string', length: 5, nullable: true)]
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
 		'user:item:put',
+		'adoption:collection:get',
+		'adoption:item:get'
 	])]
 	private ?string $postalCode;
 
@@ -157,6 +171,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:collection:get',
 		'user:item:get',
 		'user:item:put',
+		'adoption:collection:get',
+		'adoption:item:get'
 	])]
 	private ?string $city;
 
@@ -196,16 +212,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		$this->walks = new ArrayCollection();
 		$this->adoptions = new ArrayCollection();
 	}
-	
+
 	public function eraseCredentials()
-    {
-        $this->plainPassword = null;
-    }
+	{
+		$this->plainPassword = null;
+	}
 
 	public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+	{
+		return (string) $this->email;
+	}
 
 	/**
 	 * Get the value of id
@@ -479,7 +495,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	/**
 	 * Get the value of city
-	 */ 
+	 */
 	public function getCity()
 	{
 		return $this->city;
@@ -489,7 +505,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * Set the value of city
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setCity($city)
 	{
 		$this->city = $city;
@@ -499,21 +515,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	/**
 	 * Get the value of roles
-	 */ 
+	 */
 	public function getRoles(): array
 	{
 		$roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+		// guarantee every user at least has ROLE_USER
+		$roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+		return array_unique($roles);
 	}
 
 	/**
 	 * Set the value of roles
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setRoles($roles)
 	{
 		$this->roles = $roles;
@@ -523,7 +539,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	/**
 	 * Get the value of email
-	 */ 
+	 */
 	public function getEmail()
 	{
 		return $this->email;
@@ -533,7 +549,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * Set the value of email
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setEmail($email)
 	{
 		$this->email = $email;
@@ -543,7 +559,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	/**
 	 * Get the value of plainPassword
-	 */ 
+	 */
 	public function getPlainPassword()
 	{
 		return $this->plainPassword;
@@ -553,7 +569,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 * Set the value of plainPassword
 	 *
 	 * @return  self
-	 */ 
+	 */
 	public function setPlainPassword($plainPassword)
 	{
 		$this->plainPassword = $plainPassword;

@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\State\AdoptionProvider;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -17,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 	operations: [
 		new GetCollection(
 			normalizationContext: [
-				'groups' => 'adoption:collection:get'
+				'groups' => 'adoption:collection:get',
 			],
 		),
 		new Post(
@@ -27,16 +29,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Get(
 			normalizationContext: [
-				'groups' => 'adoption:item:get'
+				'groups' => 'adoption:item:get',
 			],
+			provider: AdoptionProvider::class,
 			security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object.user == user)"
 		),
 		new Put(
 			denormalizationContext: [
 				'groups' => 'adoption:item:put'
-			]
+			],
+			provider: AdoptionProvider::class,
 		),
-		new Delete(),
+		new Delete(
+			provider: AdoptionProvider::class,
+		),
 	],
 	security: "is_granted('ROLE_ADMIN')",
 	normalizationContext: [
@@ -69,8 +75,8 @@ class Adoption
 		'adoption:collection:get',
 		'adoption:item:get',
 		'adoption:collection:post',
-		'adoption:item:put',
 	])]
+	#[ApiProperty(identifier: false)]
 	private User $user;
 
 	#[ORM\Id]
@@ -82,10 +88,10 @@ class Adoption
 		'adoption:collection:get',
 		'adoption:item:get',
 		'adoption:collection:post',
-		'adoption:item:put',
 		'user:collection:get',
 		'user:item:get',
 	])]
+	#[ApiProperty(identifier: false)]
 	private Animal $animal;
 
 	#[ORM\Column(type: 'date')]
@@ -100,6 +106,11 @@ class Adoption
 	])]
 	private DateTimeInterface $date;
 
+	#[ApiProperty(identifier: true)]
+	public function getId()
+	{
+		return $this->animal->getId() . '-' . $this->user->getId();
+	}
 
 	/**
 	 * Get the value of user
