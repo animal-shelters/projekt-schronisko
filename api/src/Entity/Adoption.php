@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(
 			normalizationContext: [
 				'groups' => 'adoption:collection:get',
+				'datetime_format' => 'd.m.Y'
 			],
 		),
 		new Post(
@@ -30,6 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new Get(
 			normalizationContext: [
 				'groups' => 'adoption:item:get',
+				'datetime_format' => 'd.m.Y'
 			],
 			provider: AdoptionProvider::class,
 			security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object.user == user)"
@@ -109,7 +111,7 @@ class Adoption
 	#[ApiProperty(identifier: true)]
 	public function getId()
 	{
-		return $this->animal->getId() . '-' . $this->user->getId();
+		return $this->user->getId() . '-' . $this->animal->getId();
 	}
 
 	/**

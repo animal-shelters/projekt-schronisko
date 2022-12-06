@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 		new GetCollection(
 			normalizationContext: [
 				'groups' => 'animal:collection:get',
+				'datetime_format' => 'd.m.Y'
 			]
 		),
 		new Post(
@@ -33,7 +34,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Get(
 			normalizationContext: [
-				'groups' => 'animal:item:get'
+				'groups' => 'animal:item:get',
+				'datetime_format' => 'd.m.Y'
 			]
 		),
 		new Put(
@@ -73,7 +75,9 @@ class Animal
 		'user:collection:get',
 		'user:item:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?int $id;
 
@@ -85,7 +89,9 @@ class Animal
 		'animal:item:put',
 		'animal:collection:post',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private string $species;
 
@@ -96,7 +102,9 @@ class Animal
 		'animal:item:put',
 		'animal:collection:post',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $breed;
 
@@ -110,7 +118,9 @@ class Animal
 		'user:collection:get',
 		'user:item:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private string $name;
 
@@ -121,7 +131,9 @@ class Animal
 		'animal:item:put',
 		'animal:collection:post',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?DateTimeInterface $birthDate;
 
@@ -134,7 +146,9 @@ class Animal
 		'user:collection:get',
 		'user:item:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?DateTimeInterface $intakeDate;
 
@@ -145,7 +159,9 @@ class Animal
 		'animal:item:put',
 		'animal:collection:post',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $description;
 
@@ -171,7 +187,9 @@ class Animal
 		'animal:item:get',
 		'animal:collection:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $highlightedImage = null;
 
