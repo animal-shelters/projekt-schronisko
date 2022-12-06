@@ -7,7 +7,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\Controller\UserAuthController;
 use App\State\UserPostProcessor;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,7 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 	operations: [
 		new GetCollection(
 			normalizationContext: [
-				'groups' => 'user:collection:get'
+				'groups' => 'user:collection:get',
+				'datetime_format' => 'd.m.Y'
 			],
 			security: "is_granted('ROLE_ADMIN')"
 		),
@@ -35,7 +35,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Get(
 			normalizationContext: [
-				'groups' => 'user:item:get'
+				'groups' => 'user:item:get',
+				'datetime_format' => 'd.m.Y'
 			],
 			security: "object == user",
 		),
@@ -73,7 +74,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'animal:collection:get',
 		'animal:item:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	)]
 	private ?int $id;
 
@@ -102,7 +105,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'animal:collection:get',
 		'animal:item:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $name;
 
@@ -114,7 +119,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'animal:collection:get',
 		'animal:item:get',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $surname;
 
@@ -124,7 +131,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:get',
 		'user:item:put',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $pesel;
 
@@ -134,7 +143,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:get',
 		'user:item:put',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $phone;
 
@@ -152,7 +163,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:get',
 		'user:item:put',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $street;
 
@@ -162,7 +175,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:get',
 		'user:item:put',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $postalCode;
 
@@ -172,7 +187,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'user:item:get',
 		'user:item:put',
 		'adoption:collection:get',
-		'adoption:item:get'
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	])]
 	private ?string $city;
 

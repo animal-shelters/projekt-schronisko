@@ -18,7 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 	operations: [
 		new GetCollection(
 			normalizationContext: [
-				'groups' => 'walk:collection:get'
+				'groups' => 'walk:collection:get',
+				'datetime_format' => 'd.m.Y'
 			]
 		),
 		new Post(
@@ -28,7 +29,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 		),
 		new Get(
 			normalizationContext: [
-				'groups' => 'walk:item:get'
+				'groups' => 'walk:item:get',
+				'datetime_format' => 'd.m.Y'
 			],
 			security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object.user == user)"
 		),
