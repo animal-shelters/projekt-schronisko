@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Filter\UnAdoptedAnimalsFilter;
@@ -49,7 +50,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 		'groups' => [
 			'animal:item:get',
 			'animal:collection:get'
-		]
+		],
+		'datetime_format' => 'd.m.Y'
+
 	],
 	denormalizationContext: [
 		'groups' => [
@@ -77,7 +80,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private ?int $id;
 
@@ -91,7 +96,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private string $species;
 
@@ -104,7 +111,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private ?string $breed;
 
@@ -120,7 +129,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private string $name;
 
@@ -133,7 +144,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private ?DateTimeInterface $birthDate;
 
@@ -148,7 +161,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private ?DateTimeInterface $intakeDate;
 
@@ -161,7 +176,9 @@ class Animal
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private ?string $description;
 
@@ -183,13 +200,21 @@ class Animal
 	])]
 	private Collection $adoptions;
 
+	#[ORM\OneToMany(
+		mappedBy: 'animal',
+		targetEntity: Form::class
+	)]
+	private Collection $forms;
+
 	#[Groups([
 		'animal:item:get',
 		'animal:collection:get',
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+		'form:item:get',
 	])]
 	private ?string $highlightedImage = null;
 
@@ -197,6 +222,7 @@ class Animal
 	{
 		$this->walks = new ArrayCollection();
 		$this->adoptions = new ArrayCollection();
+		$this->forms = new ArrayCollection();
 	}
 
 	/**
@@ -403,6 +429,26 @@ class Animal
 	public function setHighlightedImage($highlightedImage)
 	{
 		$this->highlightedImage = $highlightedImage;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of forms
+	 */
+	public function getForms()
+	{
+		return $this->forms;
+	}
+
+	/**
+	 * Set the value of forms
+	 *
+	 * @return  self
+	 */
+	public function setForms($forms)
+	{
+		$this->forms = $forms;
 
 		return $this;
 	}

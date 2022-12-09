@@ -107,7 +107,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $name;
 
@@ -121,7 +123,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $surname;
 
@@ -133,7 +137,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $pesel;
 
@@ -145,7 +151,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $phone;
 
@@ -165,7 +173,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $street;
 
@@ -177,7 +187,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $postalCode;
 
@@ -189,7 +201,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:collection:get',
 		'adoption:item:get',
 		'walk:collection:get',
-		'walk:item:get'
+		'walk:item:get',
+		'form:collection:get',
+			'form:item:get',
 	])]
 	private ?string $city;
 
@@ -200,6 +214,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Groups([
 		'user:collection:get',
 		'user:item:get',
+		
 	])]
 	private Collection $forms;
 

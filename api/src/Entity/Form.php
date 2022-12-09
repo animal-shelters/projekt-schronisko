@@ -6,27 +6,31 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
 	operations: [
 		new GetCollection(
 			normalizationContext: [
-				'groups' => 'form:collection:get'
+				'groups' => 'form:collection:get',
+				'datetime_format' => 'd.m.Y'
 			],
 			security: "is_granted('ROLE_ADMIN')",
 		),
 		new Post(
 			denormalizationContext: [
-				'groups' => 'form:collection:post'
+				'groups' => 'form:collection:post',
 			],
 			security: "is_granted('ROLE_USER')",
 		),
 		new Get(
 			normalizationContext: [
-				'groups' => 'form:item:get'
+				'groups' => 'form:item:get',
+				'datetime_format' => 'd.m.Y'
 			],
 			security: "is_granted('ROLE_USER') && object.user == user",
 		),
@@ -37,12 +41,47 @@ use Symfony\Component\Serializer\Annotation\Groups;
 	normalizationContext: [
 		'groups' => [
 			'form:collection:get',
-			'form:item:get'
-		]
+			'form:item:get',
+		],
+		'datetime_format' => 'd.m.Y'
 	],
 	denormalizationContext: [
 		'groups' => 'form:collection:post'
 	]
+)]
+#[ApiResource(
+	uriTemplate: '/forms/{animalId}/animals',
+	uriVariables: [
+		'animalId' => new Link(fromClass: Animal::class, toProperty: 'animal')
+	],
+	operations: [
+		new GetCollection()
+	],
+	normalizationContext: [
+		'groups' => [
+			'form:collection:get',
+			'form:item:get'
+		],
+		'datetime_format' => 'd.m.Y'
+	],
+	security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_EMPLOYEE')"
+)]
+#[ApiResource(
+	uriTemplate: '/forms/{userId}/users',
+	uriVariables: [
+		'userId' => new Link(fromClass: User::class, toProperty: 'user')
+	],
+	normalizationContext: [
+		'groups' => [
+			'form:collection:get',
+			'form:item:get',
+		],
+		'datetime_format' => 'd.m.Y'
+	],
+	operations: [
+		new GetCollection()
+	],
+	security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object == user)",
 )]
 #[ORM\Entity()]
 class Form
@@ -94,6 +133,22 @@ class Form
 		'form:item:get'
 	])]
 	private User $user;
+
+	#[ORM\ManyToOne(
+		targetEntity: Animal::class,
+		inversedBy: 'forms',
+	)]
+	#[JoinColumn(
+		name: 'animal_id',
+		nullable: true,
+		referencedColumnName: 'id'
+	)]
+	#[Groups([
+		'form:collection:post',
+		'form:collection:get',
+		'form:item:get',
+	])]
+	private ?Animal $animal;
 
 	/**
 	 * Get the value of id
@@ -187,6 +242,26 @@ class Form
 	public function setUser(User $user): self
 	{
 		$this->user = $user;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of animal
+	 */
+	public function getAnimal()
+	{
+		return $this->animal;
+	}
+
+	/**
+	 * Set the value of animal
+	 *
+	 * @return  self
+	 */
+	public function setAnimal($animal)
+	{
+		$this->animal = $animal;
 
 		return $this;
 	}
