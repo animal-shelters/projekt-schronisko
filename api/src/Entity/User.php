@@ -84,6 +84,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Assert\NotNull()]
 	#[Groups(
 		'user:collection:post',
+		'user:collection:get',
+		'user:item:get',
+		'adoption:collection:get',
+		'adoption:item:get',
+		'walk:collection:get',
+		'walk:item:get'
 	)]
 	private string $email;
 
