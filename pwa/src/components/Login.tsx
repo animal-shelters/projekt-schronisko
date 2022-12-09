@@ -1,11 +1,13 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import axiosInstance from "../utils/axiosInstance";
 import useToken from "../utils/useToken";
 import useUser from "../utils/useUser";
 import PrimaryButton from "./PrimaryButton";
+import Spinner from "./Spinner";
 
 function Login(): JSX.Element {
   interface loginSchema {
@@ -15,6 +17,7 @@ function Login(): JSX.Element {
 
   const { token, setToken } = useToken();
   const { user, setUser } = useUser();
+  const [isBusy, setIsBusy] = useState(false);
 
   const loginValidationSchema = Yup.object().shape({
     password: Yup.string().required("To pole jest wymagane."),
@@ -24,15 +27,23 @@ function Login(): JSX.Element {
   });
 
   function handleLogin(data: loginSchema) {
+    setIsBusy(true);
     axios
       .post("https://localhost/auth", data)
       .then((response) => {
         console.log(response.data);
         setToken(response.data.token);
-        axiosInstance.get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } }).then((response) => { setUser({ id: response.data.id, roles: response.data[0].roles }); window.location.replace('/'); });
+        axiosInstance
+          .get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } })
+          .then((response) => {
+            setUser({ id: response.data.id, roles: response.data[0].roles });
+            window.location.replace('/');
+            setIsBusy(false);
+          });
       })
       .catch((error) => {
         console.log(error);
+        setIsBusy(false);
       });
     console.log(data);
   }
@@ -59,7 +70,14 @@ function Login(): JSX.Element {
               {errors.password && touched.password ? (
                 <div>{errors.password}</div>
               ) : null}
-              <PrimaryButton type="submit" className="bg-primary dark:bg-primaryDark dark:text-white">Zaloguj się</PrimaryButton>
+              <div className="flex items-center py-2">
+                <PrimaryButton busy={isBusy} type="submit">Zaloguj się</PrimaryButton>
+                {isBusy &&
+                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
+                    <span className="visually-hidden">Ładowanie...</span>
+                  </div>
+                }
+              </div>
             </Form>
           )}
         </Formik>
@@ -67,7 +85,10 @@ function Login(): JSX.Element {
     );
   } else {
     return (
-      <h1>Jesteś już zalogowany!</h1>
+      <div>
+        <div className="text-center">Trwa pobieranie danych użytkownika...</div>
+        <Spinner />
+      </div>
     )
   }
 }
