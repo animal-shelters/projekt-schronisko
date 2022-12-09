@@ -42,6 +42,9 @@ function Login(): JSX.Element {
           });
       })
       .catch((error) => {
+        if (error.response.status === 401) {
+          alert("Wprowadzono błędne dane logowania");
+        }
         console.log(error);
         setIsBusy(false);
       });
