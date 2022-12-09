@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
+use App\Filter\FormsForUnAdoptedAnimalsFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -84,6 +86,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 	security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') && object == user)",
 )]
 #[ORM\Entity()]
+#[ApiFilter(FormsForUnAdoptedAnimalsFilter::class)]
 class Form
 {
 	#[ORM\Id]
