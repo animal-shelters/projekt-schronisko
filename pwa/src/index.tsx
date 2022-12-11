@@ -11,7 +11,9 @@ import Registration from "./components/Registration";
 import "./index.css";
 import { Role } from "./models/role-type";
 import Unathorized from "./routes/401";
+import AddAdoption from "./routes/AddAdoption";
 import AdminPanelView from "./routes/AdminPanel";
+import Adoptions from "./routes/Adoptions";
 import AnimalDetailsPage from "./routes/AnimalDetailsPage";
 import AnimalsPage from "./routes/AnimalsPage";
 import TempForm from "./routes/TempForm";
@@ -35,6 +37,8 @@ root.render(
         {/* <Route path="edit_landing_page" element={<LandingPageEdit />} /> */}
         <Route path="create_form" element={<FormCreator />} />
         <Route path="add_animal" element={<AddAnimal />} />
+        <Route path="adoptions" element={<Adoptions />} />
+        <Route path="add_adoption" element={<AddAdoption />} />
       </Route>
       <Route path="animals" element={<AnimalsPage />} />
       <Route path="animals/:id" element={<AnimalDetailsPage />} />
