@@ -93,16 +93,16 @@ export default function AddAdoption() {
             axiosInstance.post("adoptions", mapAdoptionToDto(data), { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((_) => {
                     alert("Poprawnie zapisano adopcję");
-                    window.location.replace('/adoptions');
+                    window.location.replace('/admin_panel/adoptions');
                 }).catch((error) => {
                     console.error(error);
                     alert("Wystąpił problem przy zapisywaniu adopcji");
                 })
         } else {
-            axiosInstance.put("adoptions", mapAdoptionToDto(data), { headers: { 'Authorization': `Bearer ${token}` } })
+            axiosInstance.put(`adoptions/${id}`, mapAdoptionToDto(data), { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((_) => {
                     alert("Poprawnie zapisano adopcję");
-                    window.location.replace('/adoptions');
+                    window.location.replace('/admin_panel/adoptions');
                 }).catch((error) => {
                     console.error(error);
                     alert("Wystąpił problem przy zapisywaniu adopcji");
