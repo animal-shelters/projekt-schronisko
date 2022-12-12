@@ -39,6 +39,7 @@ root.render(
         <Route path="add_animal" element={<AddAnimal />} />
         <Route path="adoptions" element={<Adoptions />} />
         <Route path="add_adoption" element={<AddAdoption />} />
+        <Route path="edit_adoption/:id" element={<AddAdoption />} />
       </Route>
       <Route path="animals" element={<AnimalsPage />} />
       <Route path="animals/:id" element={<AnimalDetailsPage />} />

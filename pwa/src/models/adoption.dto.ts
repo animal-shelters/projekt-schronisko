@@ -1,22 +1,20 @@
-import Animal from "./animal.dto";
-import User from "./user-type";
+import Animal, { AnimalDto } from "./animal.dto";
+import User, { FullUser, UserDto } from "./user-type";
 
 export default interface Adoption {
     adoptionId: string;
     userId: number;
     animalId: number;
-    date: Date;
-    user: User;
+    date: string;
+    user: FullUser;
     animal: Animal;
 }
 
 export interface AdoptionDto {
-    adoptionId: string;
-    userId: string;
-    animalId: string;
-    date: Date;
-    user: User;
-    animal: Animal;
+    "@id": string;
+    date: string;
+    user: UserDto;
+    animal: AnimalDto;
 }
 
 export interface AdoptionPostDto {
@@ -27,7 +25,7 @@ export interface AdoptionPostDto {
 }
 
 export function mapAdoptionToDto(data: AdoptionPostDto): AdoptionPostDto {
-    return{
+    return {
         adoption: data.adoption ? `/adoptions/${data.adoption}` : undefined,
         user: `/users/${data.user}`,
         animal: `/animals/${data.animal}`,
@@ -37,11 +35,15 @@ export function mapAdoptionToDto(data: AdoptionPostDto): AdoptionPostDto {
 
 export function mapAdoption(data: AdoptionDto): Adoption {
     return {
-        adoptionId: data.adoptionId.replace("/adoptions/", ""),
-        userId: parseInt(data.userId.replace( /^\D+/g, '')),
-        animalId: parseInt(data.animalId.replace( /^\D+/g, '')),
+        adoptionId: data["@id"].replace("/adoptions/", ""),
+        userId: parseInt(data.user["@id"].replace(/^\D+/g, '')),
+        animalId: parseInt(data.animal["@id"].replace(/^\D+/g, '')),
         date: data.date,
-        user: data.user,
-        animal: data.animal
+        user: {
+            id: parseInt(data.user["@id"].replace(/^\D+/g, '')),
+            roles: data.user.roles,
+            email: data.user.email
+        },
+        animal: { ...data.animal, id: parseInt(data["@id"].replace(/^\D+/g, '')) }
     }
 }

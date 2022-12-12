@@ -4,7 +4,7 @@ import Spinner from "../components/Spinner";
 import TD from "../components/tables/TD";
 import TH from "../components/tables/TH";
 import TR from "../components/tables/TR";
-import Adoption from "../models/adoption.dto";
+import Adoption, { AdoptionDto, mapAdoption } from "../models/adoption.dto";
 import axiosInstance from "../utils/axiosInstance";
 import useToken from "../utils/useToken";
 
@@ -18,7 +18,9 @@ function Adoptions(): JSX.Element {
         axiosInstance.get("adoptions", { headers: { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
                 console.log(response.data["hydra:member"]);
-                setAdoptions(response.data["hydra:member"]);
+                setAdoptions(Array.from(response.data["hydra:member"].map((adoption: AdoptionDto) => {
+                    return mapAdoption(adoption);
+                })));
                 setIsLoading(false);
             })
             .catch((error) => {
@@ -64,10 +66,14 @@ function Adoptions(): JSX.Element {
                                 </TD>
                                 <TD>
                                     <Link to={`/users/${adoption.user.id}`}>
-                                        *tutaj będzie email*
+                                        {adoption.user.email}
                                     </Link>
                                 </TD>
-                                <TD><i className="fa-solid fa-pen-to-square fa-xl"></i></TD>
+                                <TD>
+                                    <Link to={`/admin_panel/edit_adoption/${adoption.adoptionId}`} state={{ adoption: adoption }}>
+                                        <i className="fa-solid fa-pen-to-square fa-xl"></i>
+                                    </Link>
+                                </TD>
                             </TR>
                         )
                     })}

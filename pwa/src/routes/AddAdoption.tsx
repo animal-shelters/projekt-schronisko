@@ -6,10 +6,32 @@ import User from "../models/user-type";
 import Animal from "../models/animal.dto";
 import axiosInstance from "../utils/axiosInstance";
 import useToken from "../utils/useToken";
-import { dateToInputFormat } from "../utils/dateUtils";
-import { mapAdoptionToDto } from "../models/adoption.dto";
+import { dateToInputFormat, stringDateToInputFormat } from "../utils/dateUtils";
+import Adoption, { AdoptionDto, mapAdoption, mapAdoptionToDto } from "../models/adoption.dto";
+import { useLocation, useParams } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
+import Spinner from "../components/Spinner";
+
+interface AdoptionSchema {
+    user: string;
+    animal: string;
+    date: string;
+}
 
 export default function AddAdoption() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [initialValues, setInitialValues] = useState<AdoptionSchema | null>(null);
+    const location = useLocation();
+    const { adoption } = location.state ? location.state as { adoption: Adoption | undefined } : { adoption: null };
+
+    const { id } = useParams();
+    if (adoption) {
+        setInitialValues({
+            animal: adoption.animalId.toString(),
+            user: adoption.userId.toString(),
+            date: stringDateToInputFormat(adoption.date)
+        });
+    }
     const [isBusy, setIsBusy] = useState(false);
     const [users, setUsers] = useState<Array<User>>([]);
     const [animals, setAnimals] = useState<Array<Animal>>([]);
@@ -17,6 +39,25 @@ export default function AddAdoption() {
     const { token } = useToken();
 
     useEffect(() => {
+        if (!adoption && id) {
+            setIsLoading(true);
+            axiosInstance.get(`adoptions/${id}`, { headers: { 'Authorization': `Bearer ${token}` } })
+                .then((response: AxiosResponse<any>) => {
+                    let adoption = mapAdoption(response.data["hydra:member"][0]);
+                    setInitialValues ( {
+                        animal: adoption.animalId.toString(),
+                        user: adoption.userId.toString(),
+                        date: stringDateToInputFormat(adoption.date)
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                    alert("Wystąpił problem podczas ładowania danych adopcji");
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        }
         axiosInstance.get("animals")
             .then((response) => {
                 setAnimals(response.data["hydra:member"]);
@@ -35,13 +76,6 @@ export default function AddAdoption() {
             });
     }, [])
 
-
-    interface AdoptionSchema {
-        user: string;
-        animal: string;
-        date: string;
-    }
-
     const adoptionValidationSchema = Yup.object().shape({
         user: Yup.string()
             .required("To pole jest wymagane."),
@@ -55,24 +89,43 @@ export default function AddAdoption() {
     function handleSubmit(data: AdoptionSchema) {
         setIsBusy(true);
         console.log(mapAdoptionToDto(data));
-        axiosInstance.post("adoptions", mapAdoptionToDto(data), { headers: { 'Authorization': `Bearer ${token}` } })
-            .then((_) => {
-                alert("Poprawnie zapisano adopcję");
-                window.location.replace('/adoptions');
-            }).catch((error) => {
-                console.error(error);
-                alert("Wystąpił problem przy zapisywaniu adopcji");
-            })
+        if (!initialValues) {
+            axiosInstance.post("adoptions", mapAdoptionToDto(data), { headers: { 'Authorization': `Bearer ${token}` } })
+                .then((_) => {
+                    alert("Poprawnie zapisano adopcję");
+                    window.location.replace('/adoptions');
+                }).catch((error) => {
+                    console.error(error);
+                    alert("Wystąpił problem przy zapisywaniu adopcji");
+                })
+        } else {
+            axiosInstance.put("adoptions", mapAdoptionToDto(data), { headers: { 'Authorization': `Bearer ${token}` } })
+                .then((_) => {
+                    alert("Poprawnie zapisano adopcję");
+                    window.location.replace('/adoptions');
+                }).catch((error) => {
+                    console.error(error);
+                    alert("Wystąpił problem przy zapisywaniu adopcji");
+                })
+        }
         setIsBusy(false);
+    }
+
+    if (isLoading) {
+        return (
+            <Spinner />
+        );
     }
 
     return (
         <Formik
-            initialValues={{
-                user: "",
-                animal: "",
-                date: dateToInputFormat(new Date()),
-            }}
+            initialValues={initialValues
+                ? initialValues
+                : {
+                    user: "",
+                    animal: "",
+                    date: dateToInputFormat(new Date()),
+                }}
             validationSchema={adoptionValidationSchema}
             onSubmit={(values) => handleSubmit(values)}
         >
