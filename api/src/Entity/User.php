@@ -82,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	#[ORM\Column(type: 'string', length: 255, unique: true)]
 	#[Assert\NotNull()]
-	#[Groups(
+	#[Groups([
 		'user:collection:post',
 		'user:collection:get',
 		'user:item:get',
@@ -90,7 +90,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		'adoption:item:get',
 		'walk:collection:get',
 		'walk:item:get'
-	)]
+	])]
 	private string $email;
 
 	#[ORM\Column(type: 'string', length: 255)]
