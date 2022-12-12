@@ -312,9 +312,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	/**
 	 * Get the value of name
 	 *
-	 * @return string
+	 * @return ?string
 	 */
-	public function getName(): string
+	public function getName(): ?string
 	{
 		return $this->name;
 	}
@@ -322,11 +322,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	/**
 	 * Set the value of name
 	 *
-	 * @param string $name
+	 * @param ?string $name
 	 *
 	 * @return self
 	 */
-	public function setName(string $name): self
+	public function setName(?string $name): self
 	{
 		$this->name = $name;
 
@@ -338,7 +338,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 *
 	 * @return string
 	 */
-	public function getSurname(): string
+	public function getSurname(): ?string
 	{
 		return $this->surname;
 	}
@@ -346,11 +346,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	/**
 	 * Set the value of surname
 	 *
-	 * @param string $surname
+	 * @param ?string $surname
 	 *
 	 * @return self
 	 */
-	public function setSurname(string $surname): self
+	public function setSurname(?string $surname): self
 	{
 		$this->surname = $surname;
 
@@ -386,7 +386,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 *
 	 * @return string
 	 */
-	public function getPhone(): string
+	public function getPhone(): ?string
 	{
 		return $this->phone;
 	}
@@ -394,11 +394,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	/**
 	 * Set the value of phone
 	 *
-	 * @param string $phone
+	 * @param ?string $phone
 	 *
 	 * @return self
 	 */
-	public function setPhone(string $phone): self
+	public function setPhone(?string $phone): self
 	{
 		$this->phone = $phone;
 
