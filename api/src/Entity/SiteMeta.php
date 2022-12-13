@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
     operations: [
@@ -34,12 +35,26 @@ class SiteMeta
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string')]
+    #[Groups([
+        'site_meta:collection:post',
+        'site_meta:collection:get'
+    ])]
     private string $metaKey;
 
     #[ORM\Column(type: 'string', nullable: true)]
+    #[Groups([
+        'site_meta:collection:post',
+        'site_meta:collection:get',
+        'site_meta:item:put'
+    ])]
     private ?string $stringValue;
 
 	#[ORM\Column(type: 'json', nullable: true)]
+    #[Groups([
+        'site_meta:collection:post',
+        'site_meta:collection:get',
+        'site_meta:item:put'
+    ])]
     private ?array $jsonValue;
 
     /**
