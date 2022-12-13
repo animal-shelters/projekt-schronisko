@@ -106,7 +106,7 @@ function LandingPageEdit() {
                     <label htmlFor="contact.krs">KRS</label>
                     <Field name="contact.krs" placeholder="KRS" className="mb-4" />
 
-                    <label htmlFor="cntact.email">Email</label>
+                    <label htmlFor="contact.email">Email</label>
                     <Field name="contact.email" placeholder="Adres poczty email" type="email" className="mb-4" />
 
                     <label htmlFor="contact.mapHref">Link google maps</label>
