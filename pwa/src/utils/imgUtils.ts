@@ -13,6 +13,12 @@ export function urlToFile(url: string, fileName: string): Promise<File | undefin
 
 }
 
+export function urlToFileName(url: string) {
+    let name = url.substring(url.search(';')+6);
+    name = name.substring(0, name.search(';'));
+    return name;
+}
+
 export function mapResponseToUrls(response: any) {
     const urls: string[] = [];
     if (response.data["hydra:member"].length == 0) {
