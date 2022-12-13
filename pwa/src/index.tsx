@@ -5,7 +5,7 @@ import App from "./App";
 import AddAnimal from "./components/AddAnimal";
 import FormCreator from "./components/forms/FormCreator";
 import Header from "./components/Header";
-// import LandingPageEdit from "./components/LandingPageEdit";
+import LandingPageEdit from "./components/LandingPageEdit";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
 import "./index.css";
@@ -34,7 +34,7 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="admin_panel" element={<Protected ><AdminPanelView /></Protected>}>
-        {/* <Route path="edit_landing_page" element={<LandingPageEdit />} /> */}
+        <Route path="edit_landing_page" element={<LandingPageEdit />} />
         <Route path="create_form" element={<FormCreator />} />
         <Route path="add_animal" element={<AddAnimal />} />
         <Route path="adoptions" element={<Adoptions />} />
