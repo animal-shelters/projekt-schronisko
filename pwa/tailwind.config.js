@@ -18,6 +18,12 @@ module.exports = {
             hover: "#4C545F",
           },
         },
+        secondary: {
+          dark: {
+            DEFAULT: "#364f73",
+            hover: "#405573",
+          },
+        },
       },
     },
   },

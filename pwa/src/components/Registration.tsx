@@ -1,7 +1,11 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
+import { useState } from "react";
 import * as Yup from "yup";
 import axiosInstance from "../utils/axiosInstance";
+import useToken from "../utils/useToken";
+import useUser from "../utils/useUser";
+import PrimaryButton from "./PrimaryButton";
 
 interface registrationSchema {
   email: string;
@@ -22,14 +26,28 @@ const registrationValidationSchema = Yup.object().shape({
 });
 
 function Registration(): JSX.Element {
+  const { user, setUser } = useUser();
+  const { setToken } = useToken();
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleRegistration = (data: registrationSchema) => {
+    setIsLoading(true);
     axiosInstance
       .post("users", data)
       .then((response) => {
-        console.log(response.data);
+        setUser({ id: response.data.id, roles: response.data.roles });
+        axios
+          .post("https://localhost/auth", data)
+          .then((response) => {
+            setToken(response.data.token);
+            window.location.replace('/');
+            setIsLoading(false);
+          })
       })
       .catch((error) => {
         console.log(error);
+        alert("Wystąpił nieoczekiwany błąd");
+        setIsLoading(false);
       });
   };
 
@@ -59,7 +77,13 @@ function Registration(): JSX.Element {
             {errors.passwordConfirmation && touched.passwordConfirmation ? (
               <div>{errors.passwordConfirmation}</div>
             ) : null}
-            <button type="submit">Zarejestruj się</button>
+            <div className="flex items-center py-2">
+              <PrimaryButton type="submit" className="mt-2" busy={isLoading}>Zarejestruj się</PrimaryButton>
+              {isLoading &&
+                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
+                  <span className="visually-hidden">Ładowanie...</span>
+                </div>}
+            </div>
           </Form>
         )}
       </Formik>

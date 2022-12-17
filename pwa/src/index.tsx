@@ -4,6 +4,7 @@ import 'tw-elements';
 import App from "./App";
 import AddAnimal from "./components/AddAnimal";
 import FormCreator from "./components/forms/FormCreator";
+import FormView from "./components/forms/FormView";
 import Header from "./components/Header";
 import LandingPageEdit from "./components/LandingPageEdit";
 import Login from "./components/Login";
@@ -44,6 +45,7 @@ root.render(
       <Route path="animals" element={<AnimalsPage />} />
       <Route path="animals/:id" element={<AnimalDetailsPage />} />
       <Route path="temp_form" element={<TempForm />} />
+      <Route path="form/:id" element={<FormView />} />
       <Route path="register" element={<Registration />} />
       <Route path="login" element={<Login />} />
     </Routes>

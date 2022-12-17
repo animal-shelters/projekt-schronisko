@@ -37,28 +37,11 @@ const InitialData: stateInterface = {
                 placeholder: "",
             },
         },
-        "component4": {
-            id: "component4",
-            type: "OptionInput",
-            props: {
-                label: "Options label",
-                options: [
-                    {
-                        value: "option1",
-                        displayText: "Option 1"
-                    },
-                    {
-                        value: "option2",
-                        displayText: "Option 2"
-                    }
-                ]
-            }
-        }
     },
     columns: {
         "form": {
             id: "form",
-            componentsIds: ["component1", "component2", "component3", "component4"]
+            componentsIds: ["component1", "component2", "component3"]
         }
     },
     columnOrder: ["form"]

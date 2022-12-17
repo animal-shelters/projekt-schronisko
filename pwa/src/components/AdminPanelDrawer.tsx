@@ -7,6 +7,7 @@ function render(props: any){
             <Link to="add_animal" className="p-3">Dodaj zwierzę</Link>
             <Link to="adoptions" className="p-3">Lista adopcji</Link>
             <Link to="add_adoption" className="p-3">Dodaj adopcję</Link>
+            <Link to="create_form" className="p-3">Dodaj formularz</Link>
         </div>
     )
 }

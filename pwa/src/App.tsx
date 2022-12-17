@@ -30,8 +30,10 @@ function App() {
     setIsSiteMetaLoading(true);
     axiosInstance.get("site_metas")
       .then((response) => {
-        console.log(JSON.parse(response.data["hydra:member"][0].jsonValue[0]));
-        setSiteMeta(JSON.parse(response.data["hydra:member"][0].jsonValue[0]));
+        if (response.data["hydra:member"].length) {
+          console.log(JSON.parse(response.data["hydra:member"][0].jsonValue[0]));
+          setSiteMeta(JSON.parse(response.data["hydra:member"][0].jsonValue[0]));
+        }
         setIsSiteMetaLoading(false);
       })
       .catch((error) => {
@@ -145,7 +147,7 @@ function App() {
       </div>
       <div className="w-3/5 mx-auto mt-16 border-b border-gray-100 pb-8">
         <h2>Nowi w schronisku</h2>
-        <div className="flex mt-5 justify-center gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 mt-5 justify-center gap-8">
           {areAnimalsLoaind
             ? <Spinner />
             : newestAnimals && newestAnimals.length > 0 ? newestAnimals.map((animal) => {
@@ -209,25 +211,25 @@ function App() {
         <h2>Kontakt</h2>
         <div className="flex w-3/5 mx-auto gap-8 mt-5">
           {siteMeta && siteMeta.contact
-          ? (
-            <div className="my-auto flex-1">
-            {siteMeta.contact.name && <><span>{siteMeta.contact.name}</span><br /><br /></>}
-            {siteMeta.contact.addressFirstLine && <><span>{siteMeta.contact.addressFirstLine}</span><br /></>}
-            {siteMeta.contact.addressSecondLine && <><span>{siteMeta.contact.addressSecondLine}</span><br /></>}
-            {siteMeta.contact.nip && <><span>NIP {siteMeta.contact.nip}</span><br /></>}
-            {siteMeta.contact.krs && <><span>KRS {siteMeta.contact.krs}</span><br /></>}
-            {siteMeta.contact.email && <><span>{siteMeta.contact.email}</span><br /></>}
-          </div>
-          ) : (
-            <div className="my-auto flex-1">
-            <span>Schronisko dla bezdomnych zwierząt w Monako</span><br /><br />
-            <span>ul. Zwierzęca 420</span><br />
-            <span>11-111 Monako</span><br /><br />
-            <span>NIP 3212321232</span><br />
-            <span>KRS 00000123123</span><br />
-            <span>temp@mail.com</span>
-          </div>
-          )}
+            ? (
+              <div className="my-auto flex-1">
+                {siteMeta.contact.name && <><span>{siteMeta.contact.name}</span><br /><br /></>}
+                {siteMeta.contact.addressFirstLine && <><span>{siteMeta.contact.addressFirstLine}</span><br /></>}
+                {siteMeta.contact.addressSecondLine && <><span>{siteMeta.contact.addressSecondLine}</span><br /></>}
+                {siteMeta.contact.nip && <><span>NIP {siteMeta.contact.nip}</span><br /></>}
+                {siteMeta.contact.krs && <><span>KRS {siteMeta.contact.krs}</span><br /></>}
+                {siteMeta.contact.email && <><span>{siteMeta.contact.email}</span><br /></>}
+              </div>
+            ) : (
+              <div className="my-auto flex-1">
+                <span>Schronisko dla bezdomnych zwierząt w Monako</span><br /><br />
+                <span>ul. Zwierzęca 420</span><br />
+                <span>11-111 Monako</span><br /><br />
+                <span>NIP 3212321232</span><br />
+                <span>KRS 00000123123</span><br />
+                <span>temp@mail.com</span>
+              </div>
+            )}
           <iframe
             src={siteMeta && siteMeta.contact && siteMeta.contact.mapHref && siteMeta.contact.mapHref.length
               ? (siteMeta.contact.mapHref)

@@ -9,11 +9,11 @@ interface Props extends ButtonHTMLAttributes<string> {
   "data-bs-target"?: string;
 }
 
-function PrimaryButton(props: Props): JSX.Element {
+function SecondaryButton(props: Props): JSX.Element {
   return (
     <button
       onClick={props.onClick}
-      className={`${props.busy ? "bg-primary-hover dark:bg-primary-dark-hover" : "bg-primary dark:bg-primary-dark"} hover:bg-primary-hover dark:hover:bg-primary-dark-hover dark:text-white px-6 py-2 rounded-xl ` + props.className}
+      className={`${props.busy ? "bg-primary-hover dark:bg-secondary-dark-hover" : "bg-primary dark:bg-secondary-dark"} hover:bg-primary-hover dark:hover:bg-secondary-dark-hover dark:text-white px-6 py-2 rounded-xl ` + props.className}
       type={props.type}
       disabled={props.disabled || props.busy}
       data-bs-toggle={props["data-bs-toggle"]}
@@ -24,4 +24,4 @@ function PrimaryButton(props: Props): JSX.Element {
   );
 }
 
-export default PrimaryButton;
+export default SecondaryButton;

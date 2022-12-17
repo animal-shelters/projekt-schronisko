@@ -9,6 +9,10 @@ import {
     NotDraggingStyle
 } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
+import axiosInstance from "../../utils/axiosInstance";
+import useToken from "../../utils/useToken";
+import PrimaryButton from "../PrimaryButton";
+import SecondaryButton from "../SecondaryButton";
 import InitialData from "./InitialData";
 import CheckboxInput, { CreateCheckboxInputComponent } from "./Inputs/CheckboxInput";
 import OptionInput, { CreateOptionInputComponent } from "./Inputs/OptionInput";
@@ -17,8 +21,9 @@ import RadioButtonInput, {
 } from "./Inputs/RadioButtonInput";
 import TextAreaInput, { CreateTextAreaInputComponent } from "./Inputs/TextAreaInput";
 import TextInput, { CreateTextInputComponent } from "./Inputs/TextInput";
+import TextInputModal from "./modals/TextInputModal";
 
-interface componentInterface {
+export interface componentInterface {
     id: string;
     type: string;
     props: object;
@@ -49,10 +54,33 @@ function FormCreator(): JSX.Element {
     ];
 
     const [state, setState] = useState(InitialData);
+    const [formName, setFormName] = useState("");
+    const {token} = useToken();
 
-    function getComponent(componentType: string, props: any) {
+    function onModalSave(id: string, values: any) {
+        const tempComponent = state.components[id];
+        for (const [key, value] of Object.entries(values)) {
+            (tempComponent.props as Record<string, any>)[key] = value;
+        }
+        const newState = {
+            ...state,
+            conponents: {
+                ...state.components,
+                [id]: tempComponent
+            },
+        };
+        setState(newState);
+    }
+
+    function getComponent(id: string, componentType: string, props: any) {
         if (componentType === "TextInput") {
-            return <TextInput {...props} />;
+            return (
+                <div>
+                    <TextInputModal id={id} onSave={(id, values) => onModalSave(id, values)} />
+                    <TextInput {...props} />
+                    <SecondaryButton className="mt-2" type="button" data-bs-toggle="modal" data-bs-target={`#${id}-modal`}>Edytuj</SecondaryButton>
+                </div>
+            );
         }
         if (componentType === "OptionInput") {
             return <OptionInput {...props} />;
@@ -170,11 +198,22 @@ function FormCreator(): JSX.Element {
         }
     }
 
+    function onSave() {
+        const components: any = [];
+        console.log(state);
+        for (let i = 0; i < state.columns.form.componentsIds.length; i++) {
+            components.push(state.components[state.columns.form.componentsIds[i]]);
+        }
+        axiosInstance.post("form_schemes", {name: formName, content: JSON.stringify(components)}, { headers: { 'Authorization': `Bearer ${token}` } })
+            .then((response) => {
+                console.log(response);
+            })
+    }
+
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="text-left flex">
                 <div className="flex-grow">
-                    <h1>Create form</h1>
                     <form className="w-full">
                         <Droppable droppableId="form">
                             {(provided) => (
@@ -208,6 +247,7 @@ function FormCreator(): JSX.Element {
                                                                     className="component-container"
                                                                 >
                                                                     {getComponent(
+                                                                        component.id,
                                                                         component.type,
                                                                         component.props
                                                                     )}
@@ -218,6 +258,9 @@ function FormCreator(): JSX.Element {
                                                 }
                                             )}
                                             {provided.placeholder}
+                                            <label htmlFor="nazwa">Nazwa formularza</label>
+                                            <input name="nazwa" onChange={(e) => setFormName(e.target.value)} />
+                                            <PrimaryButton className="mt-2" type="button" onClick={() => onSave()}>Zapisz</PrimaryButton>
                                         </>
                                     </div>
                                 </>
