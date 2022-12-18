@@ -147,6 +147,7 @@ class Animal
 		'form:collection:get',
 		'form:item:get',
 	])]
+	#[Assert\LessThanOrEqual('today UTC')]
 	private ?DateTimeInterface $birthDate;
 
 	#[ORM\Column(type: 'date')]
@@ -164,6 +165,7 @@ class Animal
 		'form:collection:get',
 		'form:item:get',
 	])]
+	#[Assert\LessThanOrEqual('today UTC')]
 	private ?DateTimeInterface $intakeDate;
 
 	#[ORM\Column(type: 'string', length: 2000)]
