@@ -98,6 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	#[SerializedName('password')]
 	#[Assert\NotBlank(groups: ['user:collection:post'])]
+	#[Assert\Length(min: 8)]
 	#[Groups([
 		'user:collection:post',
 	])]
