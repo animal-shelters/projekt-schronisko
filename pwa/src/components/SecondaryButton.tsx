@@ -13,7 +13,7 @@ function SecondaryButton(props: Props): JSX.Element {
   return (
     <button
       onClick={props.onClick}
-      className={`${props.busy ? "bg-primary-hover dark:bg-secondary-dark-hover" : "bg-primary dark:bg-secondary-dark"} hover:bg-primary-hover dark:hover:bg-secondary-dark-hover dark:text-white px-6 py-2 rounded-xl ` + props.className}
+      className={`${props.busy ? "bg-primary-hover dark:bg-secondary-dark-hover" : "bg-primary dark:bg-secondary-dark"} hover:bg-primary-hover dark:hover:bg-secondary-dark-hover dark:text-white px-6 py-2 rounded-xl text-white ` + props.className}
       type={props.type}
       disabled={props.disabled || props.busy}
       data-bs-toggle={props["data-bs-toggle"]}

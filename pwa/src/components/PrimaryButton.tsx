@@ -13,7 +13,7 @@ function PrimaryButton(props: Props): JSX.Element {
   return (
     <button
       onClick={props.onClick}
-      className={`${props.busy ? "bg-primary-hover dark:bg-primary-dark-hover" : "bg-primary dark:bg-primary-dark"} hover:bg-primary-hover dark:hover:bg-primary-dark-hover dark:text-white px-6 py-2 rounded-xl ` + props.className}
+      className={`${props.busy ? "bg-primary-hover dark:bg-primary-dark-hover" : "bg-primary dark:bg-primary-dark"} hover:bg-primary-hover dark:hover:bg-primary-dark-hover dark:text-white px-6 py-2 rounded-xl text-white ` + props.className}
       type={props.type}
       disabled={props.disabled || props.busy}
       data-bs-toggle={props["data-bs-toggle"]}
