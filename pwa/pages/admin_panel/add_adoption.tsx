@@ -1,16 +1,17 @@
 import * as Yup from "yup";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import PrimaryButton from "../components/PrimaryButton";
-import User from "../models/user-type";
-import Animal from "../models/animal.dto";
-import axiosInstance from "../utils/axiosInstance";
-import useToken from "../utils/useToken";
-import { dateToInputFormat, stringDateToInputFormat } from "../utils/dateUtils";
-import Adoption, { AdoptionDto, mapAdoption, mapAdoptionToDto } from "../models/adoption.dto";
-import { useLocation, useParams } from "react-router-dom";
-import axios, { AxiosResponse } from "axios";
-import Spinner from "../components/Spinner";
+import PrimaryButton from "../../src/components/PrimaryButton";
+import User from "../../src/models/user-type";
+import Animal from "../../src/models/animal.dto";
+import axiosInstance from "../../src/utils/axiosInstance";
+import useToken from "../../src/utils/useToken";
+import { dateToInputFormat, stringDateToInputFormat } from "../../src/utils/dateUtils";
+import { mapAdoption, mapAdoptionToDto } from "../../src/models/adoption.dto";
+import { AxiosResponse } from "axios";
+import Spinner from "../../src/components/Spinner";
+import { useRouter } from "next/router";
+import AdminPanelLayout from "../../src/components/layouts/AdminPanelLayout";
 
 interface AdoptionSchema {
     user: string;
@@ -21,30 +22,24 @@ interface AdoptionSchema {
 export default function AddAdoption() {
     const [isLoading, setIsLoading] = useState(false);
     const [initialValues, setInitialValues] = useState<AdoptionSchema | null>(null);
-    const location = useLocation();
-    const { adoption } = location.state ? location.state as { adoption: Adoption | undefined } : { adoption: null };
 
-    const { id } = useParams();
-    if (adoption) {
-        setInitialValues({
-            animal: adoption.animalId.toString(),
-            user: adoption.userId.toString(),
-            date: stringDateToInputFormat(adoption.date)
-        });
-    }
+    const router = useRouter();
+    const { id } = router.query;
     const [isBusy, setIsBusy] = useState(false);
     const [users, setUsers] = useState<Array<User>>([]);
     const [animals, setAnimals] = useState<Array<Animal>>([]);
-
-    const { token } = useToken();
+    const [token, setToken] = useState<string | null>();
 
     useEffect(() => {
-        if (!adoption && id) {
+        const { token } = useToken();
+        setToken(token);
+
+        if (id) {
             setIsLoading(true);
             axiosInstance.get(`adoptions/${id}`, { headers: { 'Authorization': `Bearer ${token}` } })
                 .then((response: AxiosResponse<any>) => {
                     let adoption = mapAdoption(response.data["hydra:member"][0]);
-                    setInitialValues ( {
+                    setInitialValues({
                         animal: adoption.animalId.toString(),
                         user: adoption.userId.toString(),
                         date: stringDateToInputFormat(adoption.date)
@@ -118,42 +113,44 @@ export default function AddAdoption() {
     }
 
     return (
-        <Formik
-            initialValues={initialValues
-                ? initialValues
-                : {
-                    user: "",
-                    animal: "",
-                    date: dateToInputFormat(new Date()),
-                }}
-            validationSchema={adoptionValidationSchema}
-            onSubmit={(values) => handleSubmit(values)}
-        >
-            {({ errors, touched }) => (
-                <Form>
-                    <label htmlFor="user">Id użytkownika:</label>
-                    <Field name="user" type="select" />
-                    {errors.user && touched.user ? <><span>{errors.user}</span><br /></> : null}
-                    <label htmlFor="animal">Id zwierzęcia:</label>
-                    <Field name="animal" type="select" />
-                    {errors.animal && touched.animal ? (
-                        <>
-                            <span>{errors.animal}</span>
-                            <br />
-                        </>
-                    ) : null}
-                    <label htmlFor="date">Data adopcji</label>
-                    <Field name="date" type="date" />
-                    <div className="flex items-center py-2">
-                        <PrimaryButton busy={isBusy} type="submit">Zapisz</PrimaryButton>
-                        {isBusy &&
-                            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
-                                <span className="visually-hidden">Ładowanie...</span>
-                            </div>
-                        }
-                    </div>
-                </Form>
-            )}
-        </Formik>
+        <AdminPanelLayout>
+            <Formik
+                initialValues={initialValues
+                    ? initialValues
+                    : {
+                        user: "",
+                        animal: "",
+                        date: dateToInputFormat(new Date()),
+                    }}
+                validationSchema={adoptionValidationSchema}
+                onSubmit={(values) => handleSubmit(values)}
+            >
+                {({ errors, touched }) => (
+                    <Form>
+                        <label htmlFor="user">Id użytkownika:</label>
+                        <Field name="user" type="select" />
+                        {errors.user && touched.user ? <><span>{errors.user}</span><br /></> : null}
+                        <label htmlFor="animal">Id zwierzęcia:</label>
+                        <Field name="animal" type="select" />
+                        {errors.animal && touched.animal ? (
+                            <>
+                                <span>{errors.animal}</span>
+                                <br />
+                            </>
+                        ) : null}
+                        <label htmlFor="date">Data adopcji</label>
+                        <Field name="date" type="date" />
+                        <div className="flex items-center py-2">
+                            <PrimaryButton busy={isBusy} type="submit">Zapisz</PrimaryButton>
+                            {isBusy &&
+                                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
+                                    <span className="visually-hidden">Ładowanie...</span>
+                                </div>
+                            }
+                        </div>
+                    </Form>
+                )}
+            </Formik>
+        </AdminPanelLayout>
     )
 }

@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom";
-import axiosInstance from "../../utils/axiosInstance"
-import useToken from "../../utils/useToken"
-import useUser from "../../utils/useUser";
-import PrimaryButton from "../PrimaryButton";
-import Spinner from "../Spinner";
-import { componentInterface } from "./FormCreator";
-import CheckboxInput from "./Inputs/CheckboxInput";
-import OptionInput from "./Inputs/OptionInput";
-import RadioButtonInput from "./Inputs/RadioButtonInput";
-import TextAreaInput from "./Inputs/TextAreaInput";
-import TextInput from "./Inputs/TextInput";
-import TextInputModal from "./modals/TextInputModal";
+import axiosInstance from "../../src/utils/axiosInstance"
+import useToken from "../../src/utils/useToken"
+import useUser from "../../src/utils/useUser";
+import PrimaryButton from "../../src/components/PrimaryButton";
+import Spinner from "../../src/components/Spinner";
+import { componentInterface } from "../admin_panel/form_creator";
+import CheckboxInput from "../../src/components/forms/Inputs/CheckboxInput";
+import OptionInput from "../../src/components/forms/Inputs/OptionInput";
+import RadioButtonInput from "../../src/components/forms/Inputs/RadioButtonInput";
+import TextAreaInput from "../../src/components/forms/Inputs/TextAreaInput";
+import TextInput from "../../src/components/forms/Inputs/TextInput";
 
-export default function FormView() {
-    const { id } = useParams();
+interface Props {
+    id: number
+}
+
+export default function FormView({ id }: Props) {
     const { token } = useToken();
-    const {user} = useUser();
+    const { user } = useUser();
     const [isLoading, setIsLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [form, setForm] = useState<Array<componentInterface>>();
@@ -59,13 +60,13 @@ export default function FormView() {
     function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         const content: Record<string, any> = [];
         if (form) {
-            for (let i = 0; i < form.length; i++){
+            for (let i = 0; i < form.length; i++) {
                 content.push({
-                    [(form[i].id).toString()] : (e.target as any)[i].value
+                    [(form[i].id).toString()]: (e.target as any)[i].value
                 });
             }
         }
-        axiosInstance.post("forms", {content: JSON.stringify(content), formScheme: `/form_schemes/${id}`, user: `/users/${user.id}`}, { headers: { 'Authorization': `Bearer ${token}` } })
+        axiosInstance.post("forms", { content: JSON.stringify(content), formScheme: `/form_schemes/${id}`, user: `/users/${user.id}` }, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
                 console.log(response);
             })
@@ -87,4 +88,8 @@ export default function FormView() {
             <PrimaryButton type="submit" className="mt-2">Zapisz</PrimaryButton>
         </form>
     )
+}
+
+export async function getServerSideProps(context: { query: { id: number } }) {
+    return { props: { id: context.query.id } }
 }

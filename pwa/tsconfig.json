@@ -18,9 +18,25 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": [
-    "src"
+    "src",
+    "pages/admin_panel/index.tsx",
+    "pages/admin_panel/landing_page_edit.tsx",
+    "pages/admin_panel/form_creator.tsx",
+    "pages/admin_panel/add_animal.tsx",
+    "pages/admin_panel/adoptions.tsx",
+    "pages/admin_panel/add_adoption.tsx",
+    "pages/animals/index.tsx",
+    "pages/animals/[id].tsx",
+    "pages/form/[id].tsx",
+    "pages/register.tsx",
+    "pages/login.tsx",
+    "pages/index.tsx"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

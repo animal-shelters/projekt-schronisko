@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import Spinner from "../components/Spinner";
-import Animal from "../models/animal.dto";
-import axiosInstance, { backendBaseUrl } from "../utils/axiosInstance";
-import { mapResponseToUrls } from "../utils/imgUtils";
+import Spinner from "../../src/components/Spinner";
+import Animal from "../../src/models/animal.dto";
+import axiosInstance, { backendBaseUrl } from "../../src/utils/axiosInstance";
+import { mapResponseToUrls } from "../../src/utils/imgUtils";
 
-function AnimalDetailsPage() {
-    const { id } = useParams();
+interface Props {
+    id: number;
+}
+
+function AnimalDetailsPage({ id }: Props) {
     const [isLoading, setIsLoading] = useState(false);
     const [areImagesLoading, setAreImagesLoading] = useState(false);
     const [images, setImages] = useState<Array<string> | null>(null);
@@ -106,6 +108,10 @@ function AnimalDetailsPage() {
             }
         </>
     );
+}
+
+export async function getServerSideProps(context: { query: { id: number } }) {
+    return { props: { id: context.query.id } }
 }
 
 export default AnimalDetailsPage;

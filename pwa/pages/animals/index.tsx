@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import AnimalCard from "../components/AnimalCard";
-import Pagination from "../components/Pagination";
-import Spinner from "../components/Spinner";
-import Animal from "../models/animal.dto";
-import axiosInstance from "../utils/axiosInstance";
+import AnimalCard from "../../src/components/AnimalCard";
+import Pagination from "../../src/components/Pagination";
+import Spinner from "../../src/components/Spinner";
+import Animal from "../../src/models/animal.dto";
+import axiosInstance from "../../src/utils/axiosInstance";
 
 function AnimalsPage() {
     const [isLoading, setIsLoading] = useState(true);
