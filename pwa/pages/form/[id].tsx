@@ -10,19 +10,26 @@ import OptionInput from "../../src/components/forms/Inputs/OptionInput";
 import RadioButtonInput from "../../src/components/forms/Inputs/RadioButtonInput";
 import TextAreaInput from "../../src/components/forms/Inputs/TextAreaInput";
 import TextInput from "../../src/components/forms/Inputs/TextInput";
+import User from "../../src/models/user-type";
 
 interface Props {
     id: number
 }
 
 export default function FormView({ id }: Props) {
-    const { token } = useToken();
-    const { user } = useUser();
+    const [token, setToken] = useState<string | null>();
+    const [user, setUser] = useState<User | null>();
     const [isLoading, setIsLoading] = useState(false);
     const [title, setTitle] = useState("");
     const [form, setForm] = useState<Array<componentInterface>>();
 
     useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        setToken(token);
+        const user = sessionStorage.getItem('user');
+        if (user) {
+            setUser(JSON.parse(user));
+        }
         setIsLoading(true);
         axiosInstance.get(`form_schemes/${id}`, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
@@ -66,10 +73,11 @@ export default function FormView({ id }: Props) {
                 });
             }
         }
-        axiosInstance.post("forms", { content: JSON.stringify(content), formScheme: `/form_schemes/${id}`, user: `/users/${user.id}` }, { headers: { 'Authorization': `Bearer ${token}` } })
-            .then((response) => {
-                console.log(response);
-            })
+        if (user)
+            axiosInstance.post("forms", { content: JSON.stringify(content), formScheme: `/form_schemes/${id}`, user: `/users/${user.id}` }, { headers: { 'Authorization': `Bearer ${token}` } })
+                .then((response) => {
+                    console.log(response);
+                })
     }
 
     if (isLoading || form == undefined) {

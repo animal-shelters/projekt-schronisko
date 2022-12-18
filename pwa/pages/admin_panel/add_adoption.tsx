@@ -31,7 +31,7 @@ export default function AddAdoption() {
     const [token, setToken] = useState<string | null>();
 
     useEffect(() => {
-        const { token } = useToken();
+        const token = sessionStorage.getItem('token');
         setToken(token);
 
         if (id) {

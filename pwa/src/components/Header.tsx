@@ -1,12 +1,24 @@
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Role } from "../models/role-type";
+import User from "../models/user-type";
 import { logout } from "../utils/authUtils";
 import useToken from "../utils/useToken";
 import useUser from "../utils/useUser";
 
 function Header(): JSX.Element {
-  const { token } = useToken();
-  const { user } = useUser();
+  const [token, setToken] = useState<string | null>();
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    setToken(token);
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }, [])
+
 
   function goToAdmin() {
     window.location.replace('/admin_panel');
@@ -42,7 +54,7 @@ function Header(): JSX.Element {
               </Link>
             </div> :
             <div>
-              {user && user.roles.includes(Role.admin)
+              {user && (user.roles as unknown as Array<Role>).includes(Role.admin)
                 && <button onClick={() => goToAdmin()} className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Panel administratora</button>
               }
               <button onClick={() => logout()} className="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Wylogowanie</button>

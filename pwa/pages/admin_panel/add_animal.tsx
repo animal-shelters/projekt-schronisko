@@ -25,7 +25,7 @@ function AddAnimal() {
     };
 
     useEffect(() => {
-        const { token } = useToken();
+        const token = sessionStorage.getItem('token');
         setToken(token);
     }, [])
     

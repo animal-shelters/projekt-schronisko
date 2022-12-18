@@ -14,12 +14,12 @@ function Login(): JSX.Element {
     password: string;
   }
 
-  const [token, setToken] = useState<string | null>();
+  const [token, saveToken] = useState<string | null>();
   const [isBusy, setIsBusy] = useState(false);
 
   useEffect(() => {
-    const { token } = useToken();
-    setToken(token);
+    const token = sessionStorage.getItem('token');
+    saveToken(token);
   })
 
   const loginValidationSchema = Yup.object().shape({
@@ -36,15 +36,13 @@ function Login(): JSX.Element {
       .then((response) => {
         console.log(response.data);
         if (typeof window !== undefined) {
-          const { setToken } = useToken();
-          setToken(response.data.token);
+          sessionStorage.setItem('token', response.data.token);
         }
         axiosInstance
           .get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } })
           .then((response) => {
             if (typeof window !== undefined) {
-              const { setUser } = useUser();
-              setUser({ id: response.data.id, roles: response.data[0].roles });
+              sessionStorage.setItem('user', JSON.stringify({ id: response.data.id, roles: response.data[0].roles }));
             }
             window.location.replace('/');
             setIsBusy(false);

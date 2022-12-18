@@ -34,15 +34,13 @@ function Registration(): JSX.Element {
       .post("users", data)
       .then((response) => {
         if (typeof window !== undefined) {
-          const { setUser } = useUser();
-          setUser({ id: response.data.id, roles: response.data.roles });
+          sessionStorage.setItem('user', JSON.stringify({ id: response.data.id, roles: response.data.roles }));
         }
         axios
           .post("https://localhost/auth", data)
           .then((response) => {
             if (typeof window !== undefined) {
-              const { setToken } = useToken();
-              setToken(response.data.token);
+              sessionStorage.setItem('token', response.data.token);
             }
             window.location.replace('/');
             setIsLoading(false);

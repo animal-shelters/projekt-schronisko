@@ -59,7 +59,7 @@ function FormCreator(): JSX.Element {
     const [token, setToken] = useState<string | null>();
 
     useEffect(() => {
-        const { token } = useToken();
+        const token = sessionStorage.getItem('token');
         setToken(token);
     })
 
