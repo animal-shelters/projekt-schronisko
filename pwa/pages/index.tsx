@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import "./App.css";
-import AnimalCard from "./components/AnimalCard";
-import { LandingPageSchema } from "./components/LandingPageEdit";
-import Spinner from "./components/Spinner";
-import Animal from "./models/animal.dto";
-import axiosInstance from "./utils/axiosInstance";
-import { mapResponseToUrls } from "./utils/imgUtils";
+import AnimalCard from "../src/components/AnimalCard";
+import { LandingPageSchema } from "./admin_panel/landing_page_edit";
+import Spinner from "../src/components/Spinner";
+import Animal from "../src/models/animal.dto";
+import axiosInstance from "../src/utils/axiosInstance";
+import { mapResponseToUrls } from "../src/utils/imgUtils";
+import Link from "next/link";
 
 function App() {
   const [newestAnimals, setNewestAnimals] = useState<Array<Animal>>([]);
@@ -160,7 +159,7 @@ function App() {
               : <h3>Brak zwierząt w schronisku</h3>
           }
         </div>
-        <Link to="/animals">
+        <Link href="/animals">
           <button className="mt-5 inline-block px-6 py-2.5 border border-blue-600 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:text-white hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:text-white focus:outline-none focus:ring-0 active:bg-blue-800 active:text-white active:shadow-lg transition duration-150 ease-in-out">
             Wszystkie zwierzęta
           </button>

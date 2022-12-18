@@ -1,5 +1,7 @@
 export function logout() {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
-    window.location.replace("/");
+    if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        window.location.replace("/");
+    }
 }

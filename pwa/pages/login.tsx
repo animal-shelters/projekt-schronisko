@@ -1,13 +1,12 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
-import axiosInstance from "../utils/axiosInstance";
-import useToken from "../utils/useToken";
-import useUser from "../utils/useUser";
-import PrimaryButton from "./PrimaryButton";
-import Spinner from "./Spinner";
+import axiosInstance from "../src/utils/axiosInstance";
+import useToken from "../src/utils/useToken";
+import useUser from "../src/utils/useUser";
+import PrimaryButton from "../src/components/PrimaryButton";
+import Spinner from "../src/components/Spinner";
 
 function Login(): JSX.Element {
   interface loginSchema {
@@ -15,9 +14,13 @@ function Login(): JSX.Element {
     password: string;
   }
 
-  const { token, setToken } = useToken();
-  const { user, setUser } = useUser();
+  const [token, setToken] = useState<string | null>();
   const [isBusy, setIsBusy] = useState(false);
+
+  useEffect(() => {
+    const { token } = useToken();
+    setToken(token);
+  })
 
   const loginValidationSchema = Yup.object().shape({
     password: Yup.string().required("To pole jest wymagane."),
@@ -32,11 +35,17 @@ function Login(): JSX.Element {
       .post("https://localhost/auth", data)
       .then((response) => {
         console.log(response.data);
-        setToken(response.data.token);
+        if (typeof window !== undefined) {
+          const { setToken } = useToken();
+          setToken(response.data.token);
+        }
         axiosInstance
           .get("auth/user", { headers: { 'Authorization': `Bearer ${response.data.token}` } })
           .then((response) => {
-            setUser({ id: response.data.id, roles: response.data[0].roles });
+            if (typeof window !== undefined) {
+              const { setUser } = useUser();
+              setUser({ id: response.data.id, roles: response.data[0].roles });
+            }
             window.location.replace('/');
             setIsBusy(false);
           });

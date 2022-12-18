@@ -2,10 +2,10 @@ import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-import axiosInstance from "../utils/axiosInstance";
-import useToken from "../utils/useToken";
-import useUser from "../utils/useUser";
-import PrimaryButton from "./PrimaryButton";
+import axiosInstance from "../src/utils/axiosInstance";
+import useToken from "../src/utils/useToken";
+import useUser from "../src/utils/useUser";
+import PrimaryButton from "../src/components/PrimaryButton";
 
 interface registrationSchema {
   email: string;
@@ -26,8 +26,6 @@ const registrationValidationSchema = Yup.object().shape({
 });
 
 function Registration(): JSX.Element {
-  const { user, setUser } = useUser();
-  const { setToken } = useToken();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegistration = (data: registrationSchema) => {
@@ -35,11 +33,17 @@ function Registration(): JSX.Element {
     axiosInstance
       .post("users", data)
       .then((response) => {
-        setUser({ id: response.data.id, roles: response.data.roles });
+        if (typeof window !== undefined) {
+          const { setUser } = useUser();
+          setUser({ id: response.data.id, roles: response.data.roles });
+        }
         axios
           .post("https://localhost/auth", data)
           .then((response) => {
-            setToken(response.data.token);
+            if (typeof window !== undefined) {
+              const { setToken } = useToken();
+              setToken(response.data.token);
+            }
             window.location.replace('/');
             setIsLoading(false);
           })
