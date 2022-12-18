@@ -15,6 +15,7 @@ RUN apk add --no-cache \
 		file \
 		gettext \
 		git \
+		linux-headers \
 	;
 
 RUN set -eux; \
@@ -116,7 +117,7 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
 	pecl install xdebug; \
 	docker-php-ext-enable xdebug; \
-	apk del .build-deps
+	apk del .build-deps 
 
 RUN rm -f .env.local.php
 
