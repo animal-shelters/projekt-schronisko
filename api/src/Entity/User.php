@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use App\Controller\UserRoleController;
 use App\State\UserPostProcessor;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -47,6 +48,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 			security: "object == user",
 			processor: UserPostProcessor::class,
 		),
+		new Put(
+			name: 'roles',
+			security: "is_granted('ROLE_ADMIN')",
+			uriTemplate: 'users/{id}/employee',
+			uriVariables: ['id' => 'id'],
+			controller: UserRoleController::class,
+			denormalizationContext: [
+				'groups' => 'user:roles'
+			],
+			validate: false
+		)
 	],
 	normalizationContext: [
 		'groups' => [
