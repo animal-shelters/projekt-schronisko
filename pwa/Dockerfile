@@ -7,7 +7,7 @@ WORKDIR /srv/app
 COPY package.json .
 RUN npm install --force 
 COPY . .
-CMD ["npm", "start"]
+CMD ["npm", "run",  "dev"]
 
 FROM node:18-alpine3.15 as build
 WORKDIR /srv/app
