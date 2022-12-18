@@ -35,7 +35,7 @@ function AddAnimal() {
         axiosInstance.post("animals", data, { headers: { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
                 pictures.map((picture, index) => {
-                    urlToFile(picture, index.toString())
+                    urlToFile(picture.dataURL, index.toString())
                         .then((file) => {
                             if (index == 0 && pictures.length == 1) {
                                 axiosInstance.post("media_objects", { file: file, domain: `animal/${response.data.id}`, isMain: true }, { headers: { 'Authorization': `Bearer ${token}`, "Content-Type": "multipart/form-data" } })
@@ -99,7 +99,7 @@ function AddAnimal() {
                             &nbsp;
                             <SecondaryButton onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
                             {imageList.map((image, index) => (
-                                <div key={index} className="image-item">
+                                <div key={index} className="image-item flex justify-center">
                                     <img src={image.dataURL} alt="" width="100" />
                                     <div className="image-item__btn-wrapper">
                                         <PrimaryButton onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>

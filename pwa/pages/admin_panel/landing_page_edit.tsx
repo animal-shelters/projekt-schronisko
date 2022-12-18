@@ -51,7 +51,7 @@ function LandingPageEdit() {
                 alert("Wystąpił błąd podczas zapisywania danych");
             })
         pictures.map((picture, index) => {
-            urlToFile(picture, index.toString())
+            urlToFile(picture.dataURL, index.toString())
                 .then((file) => {
                     axiosInstance.post("media_objects", { file: file, domain: `banner` }, { headers: { 'Authorization': `Bearer ${token}`, "Content-Type": "multipart/form-data" } })
                         .then((response) => console.log(response));
@@ -116,7 +116,7 @@ function LandingPageEdit() {
                                         &nbsp;
                                         <SecondaryButton onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
                                         {imageList.map((image, index) => (
-                                            <div key={index} className="image-item">
+                                            <div key={index} className="image-item flex justify-center">
                                                 <img src={image.dataURL} alt="" width="100" />
                                                 <div className="image-item__btn-wrapper">
                                                     <PrimaryButton onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>
