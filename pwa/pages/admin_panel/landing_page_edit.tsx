@@ -31,19 +31,19 @@ function LandingPageEdit() {
         const token = sessionStorage.getItem('token');
         setToken(token);
     })
-    
+
     const maxNumber = 10;
-  
+
     const onChange = (
-      imageList: ImageListType,
-      addUpdateIndex: number[] | undefined
+        imageList: ImageListType,
+        addUpdateIndex: number[] | undefined
     ) => {
-      // data for submit
-      console.log(imageList, addUpdateIndex);
-      setPictures(imageList as never[]);
+        // data for submit
+        console.log(imageList, addUpdateIndex);
+        setPictures(imageList as never[]);
     };
 
-    function handleSubmit(values: any) {
+    function handleFormSubmit(values: any) {
         console.log(JSON.stringify(values));
         axiosInstance.post("site_metas", { metaKey: "landing_page", jsonValue: [JSON.stringify(values)] }, { headers: { 'Authorization': `Bearer ${token}` } })
             .catch((error) => {
@@ -66,6 +66,49 @@ function LandingPageEdit() {
     return (
         <AdminPanelLayout>
             <div>
+                <fieldset className="border-2 border-dashed p-4 pt-6 mt-4"><legend className="text-2xl">Banner</legend>
+                    <ImageUploading
+                        multiple
+                        value={pictures}
+                        onChange={onChange}
+                        maxNumber={maxNumber}
+                        maxFileSize={5000000}
+                        acceptType={["jpg", "png"]}
+                    >
+                        {({
+                            imageList,
+                            onImageUpload,
+                            onImageRemoveAll,
+                            onImageUpdate,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
+                        }) => (
+                            // write your building UI
+                            <div className="upload__image-wrapper">
+                                <PrimaryButton
+                                    type="button"
+                                    style={isDragging ? { color: "red" } : undefined}
+                                    onClick={onImageUpload}
+                                    {...dragProps}
+                                >
+                                    Dodaj zdjęcie
+                                </PrimaryButton>
+                                &nbsp;
+                                <SecondaryButton type="button" onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
+                                {imageList.map((image, index) => (
+                                    <div key={index} className="image-item flex justify-center content-center gap-2 mt-2">
+                                        <img src={image.dataURL} alt="" width="100" />
+                                        <div className="image-item__btn-wrapper flex items-center">
+                                            <PrimaryButton type="button" onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>
+                                            <SecondaryButton type="button" onClick={() => onImageRemove(index)}>Usuń</SecondaryButton>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </ImageUploading>
+                </fieldset>
                 <Formik
                     initialValues={{
                         about: [
@@ -83,59 +126,9 @@ function LandingPageEdit() {
                             mapHref: "",
                         }
                     }}
-                    onSubmit={(values) => handleSubmit(values)}>
+                    onSubmit={(values) => handleFormSubmit(values)}>
                     <Form className="w-full">
-                        <Field name="banner" as="fieldset" className="border-2 border-dashed p-4 pt-6 mt-4">
-                            <legend className="text-2xl">Baner</legend>
-                            <ImageUploading
-                                multiple
-                                value={pictures}
-                                onChange={onChange}
-                                maxNumber={maxNumber}
-                                maxFileSize={5000000}
-                                acceptType={["jpg", "png"]}
-                            >
-                                {({
-                                    imageList,
-                                    onImageUpload,
-                                    onImageRemoveAll,
-                                    onImageUpdate,
-                                    onImageRemove,
-                                    isDragging,
-                                    dragProps
-                                }) => (
-                                    // write your building UI
-                                    <div className="upload__image-wrapper">
-                                        <PrimaryButton
-                                            style={isDragging ? { color: "red" } : undefined}
-                                            onClick={onImageUpload}
-                                            {...dragProps}
-                                        >
-                                            Dodaj zdjęcie
-                                        </PrimaryButton>
-                                        &nbsp;
-                                        <SecondaryButton onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
-                                        {imageList.map((image, index) => (
-                                            <div key={index} className="image-item flex justify-center">
-                                                <img src={image.dataURL} alt="" width="100" />
-                                                <div className="image-item__btn-wrapper">
-                                                    <PrimaryButton onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>
-                                                    <SecondaryButton onClick={() => onImageRemove(index)}>Usuń</SecondaryButton>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </ImageUploading>
-                            {pictures.map((picture, index) => {
-                                return (
-                                    <>
-                                        <label htmlFor={`banner.${index}`}>{urlToFileName(picture)}</label>
-                                        <Field name={`banner.${index}`} placeholder="Tekst alternatywny" className="mb-4" />
-                                    </>
-                                );
-                            })}
-                        </Field>
+
                         <Field name="about" as="fieldset" className="border-2 border-dashed p-4 pt-6 mt-4">
                             <legend className="text-2xl">O schronisku</legend>
                             <ul className="list-disc text-left ml-4">

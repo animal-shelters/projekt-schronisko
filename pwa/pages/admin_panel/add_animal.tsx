@@ -99,9 +99,9 @@ function AddAnimal() {
                             &nbsp;
                             <SecondaryButton onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
                             {imageList.map((image, index) => (
-                                <div key={index} className="image-item flex justify-center">
+                                <div key={index} className="image-item flex justify-center content-center gap-2 mt-2">
                                     <img src={image.dataURL} alt="" width="100" />
-                                    <div className="image-item__btn-wrapper">
+                                    <div className="image-item__btn-wrapper flex items-center">
                                         <PrimaryButton onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>
                                         <SecondaryButton onClick={() => onImageRemove(index)}>Usuń</SecondaryButton>
                                     </div>
