@@ -36,8 +36,8 @@ function Registration(): JSX.Element {
         if (typeof window !== undefined) {
           sessionStorage.setItem('user', JSON.stringify({ id: response.data.id, roles: response.data.roles }));
         }
-        axios
-          .post("https://localhost/auth", data)
+        axiosInstance
+          .post("auth", data)
           .then((response) => {
             if (typeof window !== undefined) {
               sessionStorage.setItem('token', response.data.token);

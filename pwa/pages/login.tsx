@@ -31,8 +31,8 @@ function Login(): JSX.Element {
 
   function handleLogin(data: loginSchema) {
     setIsBusy(true);
-    axios
-      .post("https://localhost/auth", data)
+    axiosInstance
+      .post("auth", data)
       .then((response) => {
         console.log(response.data);
         if (typeof window !== undefined) {
