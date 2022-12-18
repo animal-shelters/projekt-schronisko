@@ -12,14 +12,16 @@ module.exports = {
         transparent: "transparent",
         current: "currentColor",
         primary: {
-          DEFAULT: "#DB70B5",
-          hover: "#AF5A91",
+          DEFAULT: "#1F2937",
+          hover: "#4C545F",
           dark: {
             DEFAULT: "#1F2937",
             hover: "#4C545F",
           },
         },
         secondary: {
+          DEFAULT: "#364f73",
+          hover: "#405573",
           dark: {
             DEFAULT: "#364f73",
             hover: "#405573",
