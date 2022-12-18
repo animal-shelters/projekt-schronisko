@@ -76,7 +76,7 @@ function AddAnimal() {
                     onChange={onChange}
                     maxNumber={maxNumber}
                     maxFileSize={5000000}
-                    acceptType={[".jpg", ".png"]}
+                    acceptType={["jpg", "png"]}
                 >
                     {({
                         imageList,

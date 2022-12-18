@@ -7,7 +7,7 @@ function render(props: any){
             <Link href="/admin_panel/add_animal" className="p-3">Dodaj zwierzę</Link>
             <Link href="/admin_panel/adoptions" className="p-3">Lista adopcji</Link>
             <Link href="/admin_panel/add_adoption" className="p-3">Dodaj adopcję</Link>
-            <Link href="/admin_panel/create_form" className="p-3">Dodaj formularz</Link>
+            <Link href="/admin_panel/form_creator" className="p-3">Dodaj formularz</Link>
         </div>
     )
 }
