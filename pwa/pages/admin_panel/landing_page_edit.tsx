@@ -26,10 +26,23 @@ export interface LandingPageSchema {
 function LandingPageEdit() {
     const [pictures, setPictures] = useState<Array<any>>([]);
     const [token, setToken] = useState<string | null>();
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasSiteMesta, setHasSiteMeta] = useState(false);
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         setToken(token);
+
+        setIsLoading(true);
+        axiosInstance.get("site_metas")
+            .then((response) => {
+                if (response.data["hydra:member"].length) {
+                    setHasSiteMeta(true);
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            })
     })
 
     const maxNumber = 10;
@@ -45,11 +58,20 @@ function LandingPageEdit() {
 
     function handleFormSubmit(values: any) {
         console.log(JSON.stringify(values));
-        axiosInstance.post("site_metas", { metaKey: "landing_page", jsonValue: [JSON.stringify(values)] }, { headers: { 'Authorization': `Bearer ${token}` } })
+        if(hasSiteMesta) {
+        axiosInstance.put(`site_metas/landing_page`, { jsonValue: [JSON.stringify(values)] }, { headers: { 'Authorization': `Bearer ${token}` } })
             .catch((error) => {
                 console.error(error);
                 alert("Wystąpił błąd podczas zapisywania danych");
             })
+        }
+        else {
+            axiosInstance.post(`site_metas`, { metaKey: "landing_page", jsonValue: [JSON.stringify(values)] }, { headers: { 'Authorization': `Bearer ${token}` } })
+            .catch((error) => {
+                console.error(error);
+                alert("Wystąpił błąd podczas zapisywania danych");
+            })
+        }
         pictures.map((picture, index) => {
             urlToFile(picture.dataURL, index.toString())
                 .then((file) => {
