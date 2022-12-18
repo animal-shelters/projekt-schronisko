@@ -11,6 +11,7 @@ import RadioButtonInput from "../../src/components/forms/Inputs/RadioButtonInput
 import TextAreaInput from "../../src/components/forms/Inputs/TextAreaInput";
 import TextInput from "../../src/components/forms/Inputs/TextInput";
 import User from "../../src/models/user-type";
+import MainLayout from "../../src/components/layouts/MainLayout";
 
 interface Props {
     id: number
@@ -81,20 +82,22 @@ export default function FormView({ id }: Props) {
     }
 
     if (isLoading || form == undefined) {
-        return <Spinner />
+        return <MainLayout><> <Spinner /></></MainLayout>
     }
 
     return (
-        <form onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit(e);
-        }}>
-            <h1 className="text-2xl text-center">{title}</h1>
-            {form.map((element) => {
-                return getComponent(element.type, element.props);
-            })}
-            <PrimaryButton type="submit" className="mt-2">Zapisz</PrimaryButton>
-        </form>
+        <MainLayout>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit(e);
+            }}>
+                <h1 className="text-2xl text-center">{title}</h1>
+                {form.map((element) => {
+                    return getComponent(element.type, element.props);
+                })}
+                <PrimaryButton type="submit" className="mt-2">Zapisz</PrimaryButton>
+            </form>
+        </MainLayout>
     )
 }
 

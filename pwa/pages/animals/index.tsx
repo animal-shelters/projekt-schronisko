@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import AnimalCard from "../../src/components/AnimalCard";
+import MainLayout from "../../src/components/layouts/MainLayout";
 import Pagination from "../../src/components/Pagination";
 import Spinner from "../../src/components/Spinner";
 import Animal from "../../src/models/animal.dto";
@@ -22,23 +23,25 @@ function AnimalsPage() {
     }, [pageIndex, pageSize])
 
     return (
-        <>
-            <h1 className="text-3xl font-bold text-center mt-16">Lista zwierząt</h1>
-            {isLoading
-                ? <Spinner />
-                :
-                <div className="container mx-auto">
-                    <div className="grid grid-cols-1 gap-8 justify-items-center md:grid-cols-3 mt-16">
-                        {animals.map((animal: Animal) => {
-                            return (
-                                <AnimalCard {...animal} key={animal.id} />
-                            )
-                        })}
+        <MainLayout>
+            <>
+                <h1 className="text-3xl font-bold text-center mt-16">Lista zwierząt</h1>
+                {isLoading
+                    ? <Spinner />
+                    :
+                    <div className="container mx-auto">
+                        <div className="grid grid-cols-1 gap-8 justify-items-center md:grid-cols-3 mt-16">
+                            {animals.map((animal: Animal) => {
+                                return (
+                                    <AnimalCard {...animal} key={animal.id} />
+                                )
+                            })}
+                        </div>
+                        <Pagination pageIndex={pageIndex} totalItems={totalCount} pageSize={pageSize} onPageSizeChange={setPageSize} setPageIndex={setPageIndex} />
                     </div>
-                    <Pagination pageIndex={pageIndex} totalItems={totalCount} pageSize={pageSize} onPageSizeChange={setPageSize} setPageIndex={setPageIndex} />
-                </div>
-            }
-        </>
+                }
+            </>
+        </MainLayout>
 
     )
 }

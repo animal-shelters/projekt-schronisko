@@ -7,6 +7,7 @@ import useToken from "../src/utils/useToken";
 import useUser from "../src/utils/useUser";
 import PrimaryButton from "../src/components/PrimaryButton";
 import Spinner from "../src/components/Spinner";
+import MainLayout from "../src/components/layouts/MainLayout";
 
 function Login(): JSX.Element {
   interface loginSchema {
@@ -60,45 +61,49 @@ function Login(): JSX.Element {
 
   if (!token) {
     return (
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <Formik
-          initialValues={{
-            email: "",
-            password: "",
-            passwordConfirmation: "",
-          }}
-          validationSchema={loginValidationSchema}
-          onSubmit={(values) => handleLogin(values)}
-        >
-          {({ errors, touched }) => (
-            <Form>
-              <label htmlFor="email">Email:</label>
-              <Field name="email" type="email" />
-              {errors.email && touched.email ? <div>{errors.email}</div> : null}
-              <label htmlFor="password">Hasło:</label>
-              <Field name="password" type="password" />
-              {errors.password && touched.password ? (
-                <div>{errors.password}</div>
-              ) : null}
-              <div className="flex items-center py-2">
-                <PrimaryButton busy={isBusy} type="submit">Zaloguj się</PrimaryButton>
-                {isBusy &&
-                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
-                    <span className="visually-hidden">Ładowanie...</span>
-                  </div>
-                }
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+      <MainLayout>
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <Formik
+            initialValues={{
+              email: "",
+              password: "",
+              passwordConfirmation: "",
+            }}
+            validationSchema={loginValidationSchema}
+            onSubmit={(values) => handleLogin(values)}
+          >
+            {({ errors, touched }) => (
+              <Form>
+                <label htmlFor="email">Email:</label>
+                <Field name="email" type="email" />
+                {errors.email && touched.email ? <div>{errors.email}</div> : null}
+                <label htmlFor="password">Hasło:</label>
+                <Field name="password" type="password" />
+                {errors.password && touched.password ? (
+                  <div>{errors.password}</div>
+                ) : null}
+                <div className="flex items-center py-2">
+                  <PrimaryButton busy={isBusy} type="submit">Zaloguj się</PrimaryButton>
+                  {isBusy &&
+                    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
+                      <span className="visually-hidden">Ładowanie...</span>
+                    </div>
+                  }
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </MainLayout>
     );
   } else {
     return (
-      <div>
-        <div className="text-center">Trwa pobieranie danych użytkownika...</div>
-        <Spinner />
-      </div>
+      <MainLayout>
+        <div>
+          <div className="text-center">Trwa pobieranie danych użytkownika...</div>
+          <Spinner />
+        </div>
+      </MainLayout>
     )
   }
 }

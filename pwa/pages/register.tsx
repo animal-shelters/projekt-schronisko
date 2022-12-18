@@ -6,6 +6,7 @@ import axiosInstance from "../src/utils/axiosInstance";
 import useToken from "../src/utils/useToken";
 import useUser from "../src/utils/useUser";
 import PrimaryButton from "../src/components/PrimaryButton";
+import MainLayout from "../src/components/layouts/MainLayout";
 
 interface registrationSchema {
   email: string;
@@ -54,42 +55,44 @@ function Registration(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-          passwordConfirmation: "",
-        }}
-        validationSchema={registrationValidationSchema}
-        onSubmit={(values) => handleRegistration(values)}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            <label htmlFor="email">Email:</label>
-            <Field name="email" type="email" />
-            {errors.email && touched.email ? <div>{errors.email}</div> : null}
-            <label htmlFor="password">Hasło:</label>
-            <Field name="password" type="password" />
-            {errors.password && touched.password ? (
-              <div>{errors.password}</div>
-            ) : null}
-            <label htmlFor="passwordConfirmation">Potwierdzenie hasła:</label>
-            <Field name="passwordConfirmation" type="password" />
-            {errors.passwordConfirmation && touched.passwordConfirmation ? (
-              <div>{errors.passwordConfirmation}</div>
-            ) : null}
-            <div className="flex items-center py-2">
-              <PrimaryButton type="submit" className="mt-2" busy={isLoading}>Zarejestruj się</PrimaryButton>
-              {isLoading &&
-                <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
-                  <span className="visually-hidden">Ładowanie...</span>
-                </div>}
-            </div>
-          </Form>
-        )}
-      </Formik>
-    </div>
+    <MainLayout>
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+            passwordConfirmation: "",
+          }}
+          validationSchema={registrationValidationSchema}
+          onSubmit={(values) => handleRegistration(values)}
+        >
+          {({ errors, touched }) => (
+            <Form>
+              <label htmlFor="email">Email:</label>
+              <Field name="email" type="email" />
+              {errors.email && touched.email ? <div>{errors.email}</div> : null}
+              <label htmlFor="password">Hasło:</label>
+              <Field name="password" type="password" />
+              {errors.password && touched.password ? (
+                <div>{errors.password}</div>
+              ) : null}
+              <label htmlFor="passwordConfirmation">Potwierdzenie hasła:</label>
+              <Field name="passwordConfirmation" type="password" />
+              {errors.passwordConfirmation && touched.passwordConfirmation ? (
+                <div>{errors.passwordConfirmation}</div>
+              ) : null}
+              <div className="flex items-center py-2">
+                <PrimaryButton type="submit" className="mt-2" busy={isLoading}>Zarejestruj się</PrimaryButton>
+                {isLoading &&
+                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
+                    <span className="visually-hidden">Ładowanie...</span>
+                  </div>}
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </MainLayout>
   );
 }
 

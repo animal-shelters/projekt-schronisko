@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import MainLayout from "../../src/components/layouts/MainLayout";
 import Spinner from "../../src/components/Spinner";
 import Animal from "../../src/models/animal.dto";
 import axiosInstance, { backendBaseUrl } from "../../src/utils/axiosInstance";
@@ -54,7 +55,7 @@ function AnimalDetailsPage({ id }: Props) {
 
 
     return (
-        <>
+        <MainLayout>
             {isLoading
                 ? <Spinner />
                 :
@@ -106,7 +107,7 @@ function AnimalDetailsPage({ id }: Props) {
 
                 </div>
             }
-        </>
+        </MainLayout>
     );
 }
 
