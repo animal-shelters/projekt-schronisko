@@ -69,7 +69,6 @@ function AddAnimal() {
     return (
         <AdminPanelLayout active={1}>
             <div>
-                <span className="text-3xl">Dodaj Zwierzę</span>
                 <fieldset className="border-2 border-dashed p-4 pt-6 mt-4">
                     <legend className="text-2xl">
                         Zdjęcia
