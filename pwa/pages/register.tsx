@@ -68,23 +68,44 @@ function Registration(): JSX.Element {
         >
           {({ errors, touched }) => (
             <Form>
-              <label htmlFor="email">Email:</label>
-              <Field name="email" type="email" />
-              {errors.email && touched.email ? <div>{errors.email}</div> : null}
-              <label htmlFor="password">Hasło:</label>
-              <Field name="password" type="password" />
-              {errors.password && touched.password ? (
-                <div>{errors.password}</div>
-              ) : null}
-              <label htmlFor="passwordConfirmation">Potwierdzenie hasła:</label>
-              <Field name="passwordConfirmation" type="password" />
-              {errors.passwordConfirmation && touched.passwordConfirmation ? (
-                <div>{errors.passwordConfirmation}</div>
-              ) : null}
-              <div className="flex items-center py-2">
+              <div className="md:flex md:items-center mb-6">
+                <div className="md:w-1/3">
+                  <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="email">Email:</label>
+                </div>
+                <div className="md:w-2/3">
+                  <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="email" type="email" />
+                  {errors.email && touched.email ? <div className="text-red-500 ml-1/3 absolute">{errors.email}</div> : null}
+                </div>
+              </div>
+
+              <div className="md:flex md:items-center mb-6">
+                <div className="md:w-1/3">
+                  <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="password">Hasło:</label>
+                </div>
+                <div className="md:w-2/3">
+                  <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="password" type="password" />
+                  {errors.password && touched.password ? (
+                    <div className="text-red-500 ml-1/3 absolute">{errors.password}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="md:flex md:items-center mb-6">
+                <div className="md:w-1/3">
+                  <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="passwordConfirmation">Potwierdzenie hasła:</label>
+                </div>
+                <div className="md:w-2/3">
+                  <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="passwordConfirmation" type="password" />
+                  {errors.passwordConfirmation && touched.passwordConfirmation ? (
+                    <div className="text-red-500 ml-1/3 absolute">{errors.passwordConfirmation}</div>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="flex items-center flex-row-reverse py-2 justify-items-end">
                 <PrimaryButton type="submit" className="mt-2" busy={isLoading}>Zarejestruj się</PrimaryButton>
                 {isLoading &&
-                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
+                  <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full mr-4" role="status">
                     <span className="visually-hidden">Ładowanie...</span>
                   </div>}
               </div>

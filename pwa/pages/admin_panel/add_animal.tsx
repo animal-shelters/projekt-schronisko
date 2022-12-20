@@ -113,43 +113,60 @@ function AddAnimal() {
                 <Formik
                     initialValues={{}}
                     onSubmit={(values) => handleSubmit(values)}>
-                    <Form className="w-full">
-                        <label>
-                            Gatunek
-                            <br></br>
-                            <Field name="species" placeholder="Gatunek zwierzęcia" />
-                        </label>
+                    <Form className="w-full mt-8">
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="species">Gatunek</label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="species" placeholder="Gatunek zwierzęcia" />
+                            </div>
+                        </div>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="breed">Rasa</label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="breed" placeholder="Rasa zwierzęcia" />
+                            </div>
+                        </div>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="name">Imię</label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="name" placeholder="Imię zwierzęcia" />
+                            </div>
+                        </div>
 
-                        <label>
-                            Rasa
-                            <br></br>
-                            <Field name="breed" placeholder="Rasa zwierzęcia" />
-                        </label>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="birthDate">Data urodzenia</label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="birthDate" type="date" />
+                            </div>
+                        </div>
 
-                        <label>
-                            Imię
-                            <br></br>
-                            <Field name="name" placeholder="Imię zwierzęcia" />
-                        </label>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="intakeDate">Data przyjęcia do schroniska</label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="intakeDate" type="date" />
+                            </div>
+                        </div>
 
-                        <label>
-                            Data urodzenia
-                            <br></br>
-                            <Field name="birthDate" placeholder="Data urodzenia zwierzęcia" type="date" />
-                        </label>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="description">Opis</label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <Field className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" name="description" placeholder="Opis zwierzęcia" as="textarea" />
+                            </div>
+                        </div>
 
-                        <label>
-                            Data przyjęcia do schroniska
-                            <br></br>
-                            <Field name="intakeDate" placeholder="Data przycjęcia zwierzęcia do schroniska" type="date" />
-                        </label>
-
-                        <label>
-                            Opis
-                            <br></br>
-                            <Field name="description" placeholder="Opis zwierzęcia" as="textarea" className="w-full" />
-                        </label>
-                        <div className="flex items-center py-2">
+                        <div className="flex items-center py-2 flex-row-reverse justify-items-end">
                             <PrimaryButton busy={isBusy} type="submit" className="bg-primary dark:bg-primaryDark dark:text-white">Zapisz</PrimaryButton>
                             {isBusy &&
                                 <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full ml-4" role="status">
