@@ -148,7 +148,7 @@ function App() {
         </div>
         <div className="w-3/5 mx-auto mt-16 border-b border-gray-100 pb-8">
           <h2>Nowi w schronisku</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 mt-5 justify-center gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 mt-5 justify-items-center gap-8">
             {areAnimalsLoaind
               ? <Spinner />
               : newestAnimals && newestAnimals.length > 0 ? newestAnimals.map((animal) => {
