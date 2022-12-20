@@ -18,7 +18,7 @@ function Adoptions(): JSX.Element {
         const token = sessionStorage.getItem('token');
         setToken(token);
         setIsLoading(true);
-        axiosInstance.get("adoptions", { headers: { 'Authorization': `Bearer ${token}` } })
+        axiosInstance.get("adoptions", { params: { page: 1, "order[date]": "desc" }, headers: { 'Authorization': `Bearer ${token}` } })
             .then((response) => {
                 console.log(response.data["hydra:member"]);
                 setAdoptions(Array.from(response.data["hydra:member"].map((adoption: AdoptionDto) => {
