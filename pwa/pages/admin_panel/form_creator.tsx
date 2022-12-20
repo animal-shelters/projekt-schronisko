@@ -217,7 +217,7 @@ function FormCreator(): JSX.Element {
     }
 
     return (
-        <AdminPanelLayout>
+        <AdminPanelLayout active={5}>
             <DragDropContext onDragEnd={onDragEnd}>
                 <div className="text-left flex">
                     <div className="flex-grow">

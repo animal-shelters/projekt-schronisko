@@ -34,14 +34,14 @@ function Users(): JSX.Element {
 
     if (isLoading) {
         return (
-            <AdminPanelLayout>
+            <AdminPanelLayout active={2}>
                 <Spinner />
             </AdminPanelLayout>
         )
     }
     if (!users.length) {
         return (
-            <AdminPanelLayout>
+            <AdminPanelLayout active={2}>
                 <div>
                     Brak użytkowników do wyświetlenia
                 </div>
@@ -49,7 +49,7 @@ function Users(): JSX.Element {
         )
     }
     return (
-        <AdminPanelLayout>
+        <AdminPanelLayout active={2}>
             <div>
                 <table className="min-w-full">
                     <thead className="bg-white border-b">

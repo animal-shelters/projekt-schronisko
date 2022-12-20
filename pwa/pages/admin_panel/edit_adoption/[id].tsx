@@ -107,14 +107,14 @@ export default function AddAdoption() {
 
     if (isLoading) {
         return (
-            <AdminPanelLayout>
+            <AdminPanelLayout active={3}>
                 <Spinner />
             </AdminPanelLayout>
         );
     }
 
     return (
-        <AdminPanelLayout>
+        <AdminPanelLayout active={3}>
             <Formik
                 initialValues={initialValues
                     ? initialValues

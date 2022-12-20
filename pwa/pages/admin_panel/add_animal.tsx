@@ -14,21 +14,21 @@ function AddAnimal() {
     const [isBusy, setIsBusy] = useState(false);
     const [token, setToken] = useState<string | null>();
     const maxNumber = 10;
-  
+
     const onChange = (
-      imageList: ImageListType,
-      addUpdateIndex: number[] | undefined
+        imageList: ImageListType,
+        addUpdateIndex: number[] | undefined
     ) => {
-      // data for submit
-      console.log(imageList, addUpdateIndex);
-      setPictures(imageList as never[]);
+        // data for submit
+        console.log(imageList, addUpdateIndex);
+        setPictures(imageList as never[]);
     };
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
         setToken(token);
     }, [])
-    
+
 
     async function handleSubmit(data: any) {
         setIsBusy(true);
@@ -67,49 +67,55 @@ function AddAnimal() {
     }
 
     return (
-        <AdminPanelLayout>
+        <AdminPanelLayout active={1}>
             <div>
-                Dodaj Zwierzę
-                <ImageUploading
-                    multiple
-                    value={pictures}
-                    onChange={onChange}
-                    maxNumber={maxNumber}
-                    maxFileSize={5000000}
-                    acceptType={["jpg", "png"]}
-                >
-                    {({
-                        imageList,
-                        onImageUpload,
-                        onImageRemoveAll,
-                        onImageUpdate,
-                        onImageRemove,
-                        isDragging,
-                        dragProps
-                    }) => (
-                        // write your building UI
-                        <div className="upload__image-wrapper">
-                            <PrimaryButton
-                                style={isDragging ? { color: "red" } : undefined}
-                                onClick={onImageUpload}
-                                {...dragProps}
-                            >
-                                Dodaj zdjęcie
-                            </PrimaryButton>
-                            &nbsp;
-                            <SecondaryButton onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
-                            {imageList.map((image, index) => (
-                                <div key={index} className="image-item flex justify-center content-center gap-2 mt-2">
-                                    <img src={image.dataURL} alt="" width="100" />
-                                    <div className="image-item__btn-wrapper flex items-center">
-                                        <PrimaryButton onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>
-                                        <SecondaryButton onClick={() => onImageRemove(index)}>Usuń</SecondaryButton>
+                <span className="text-3xl">Dodaj Zwierzę</span>
+                <fieldset className="border-2 border-dashed p-4 pt-6 mt-4">
+                    <legend className="text-2xl">
+                        Zdjęcia
+                        <span className="text-md"> (do 2MB)</span>
+                    </legend>
+                    <ImageUploading
+                        multiple
+                        value={pictures}
+                        onChange={onChange}
+                        maxNumber={maxNumber}
+                        maxFileSize={5000000}
+                        acceptType={["jpg", "png"]}
+                    >
+                        {({
+                            imageList,
+                            onImageUpload,
+                            onImageRemoveAll,
+                            onImageUpdate,
+                            onImageRemove,
+                            isDragging,
+                            dragProps
+                        }) => (
+                            // write your building UI
+                            <div className="upload__image-wrapper">
+                                <PrimaryButton
+                                    style={isDragging ? { color: "red" } : undefined}
+                                    onClick={onImageUpload}
+                                    {...dragProps}
+                                >
+                                    Dodaj zdjęcie
+                                </PrimaryButton>
+                                &nbsp;
+                                <SecondaryButton onClick={onImageRemoveAll}>Usuń wszystkie zdjęcia</SecondaryButton>
+                                {imageList.map((image, index) => (
+                                    <div key={index} className="image-item flex justify-center content-center gap-2 mt-2">
+                                        <img src={image.dataURL} alt="" width="100" />
+                                        <div className="image-item__btn-wrapper flex items-center">
+                                            <PrimaryButton onClick={() => onImageUpdate(index)}>Aktualizuj</PrimaryButton>
+                                            <SecondaryButton onClick={() => onImageRemove(index)}>Usuń</SecondaryButton>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </ImageUploading>
+                                ))}
+                            </div>
+                        )}
+                    </ImageUploading>
+                </fieldset>
                 <Formik
                     initialValues={{}}
                     onSubmit={(values) => handleSubmit(values)}>

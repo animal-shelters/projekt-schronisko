@@ -95,9 +95,13 @@ function LandingPageEdit() {
     }
 
         return (
-            <AdminPanelLayout>
+            <AdminPanelLayout active={0}>
                 <div>
-                    <fieldset className="border-2 border-dashed p-4 pt-6 mt-4"><legend className="text-2xl">Banner</legend>
+                    <fieldset className="border-2 border-dashed p-4 pt-6 mt-4">
+                        <legend className="text-2xl">
+                            Banner
+                            <span className="text-md"> (do 2MB)</span>
+                        </legend>
                         <ImageUploading
                             multiple
                             value={pictures}

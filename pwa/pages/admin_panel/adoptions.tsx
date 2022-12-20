@@ -34,14 +34,14 @@ function Adoptions(): JSX.Element {
 
     if (isLoading) {
         return (
-            <AdminPanelLayout>
+            <AdminPanelLayout active={3}>
                 <Spinner />
             </AdminPanelLayout>
         )
     }
     if (!adoptions.length) {
         return (
-            <AdminPanelLayout>
+            <AdminPanelLayout active={3}>
                 <div>
                     Brak adopcji do wyświetlenia
                 </div>
@@ -49,7 +49,7 @@ function Adoptions(): JSX.Element {
         )
     }
     return (
-        <AdminPanelLayout>
+        <AdminPanelLayout active={3}>
             <div>
                 <table className="min-w-full">
                     <thead className="bg-white border-b">
