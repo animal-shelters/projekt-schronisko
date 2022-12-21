@@ -19,7 +19,7 @@ class Create
         $mediaObject = new MediaObject();
         $mediaObject->setFile($uploadedFile);
         $mediaObject->setDomain($request->request->get('domain'));
-        $mediaObject->setIsMain($request->request->get('isMain'));
+        $mediaObject->setIsMain($request->request->get('isMain') === 'true');
         
         return $mediaObject;
     }
